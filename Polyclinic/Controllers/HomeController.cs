@@ -4,17 +4,23 @@ using System.Diagnostics;
 
 namespace Polyclinic.Controllers
 {
+    
     public class HomeController : Controller
     {
+        //Контекст для получения данных сессии
+        private readonly IHttpContextAccessor _context;
+
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IHttpContextAccessor context)
         {
             _logger = logger;
+            _context = context;
         }
 
         public IActionResult Index()
         {
+            
             return View();
         }
 

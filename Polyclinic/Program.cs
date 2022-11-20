@@ -3,6 +3,14 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+//Сервис для контекста
+builder.Services.AddSingleton<IHttpContextAccessor,HttpContextAccessor>();
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(60);
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -15,7 +23,7 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
+app.UseSession();
 app.UseRouting();
 
 app.UseAuthorization();
