@@ -9,7 +9,6 @@ namespace Polyclinic.Models
         [ForeignKey("Inspection")]
         public int Id { get; set; }
         public string MKB { get; set; }
-        public string MyProperty { get; set; }
-        public string Description { get; set; }
+        public string? Description { get; set; }
     }
 }
