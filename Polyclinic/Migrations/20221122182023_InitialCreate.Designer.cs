@@ -12,8 +12,8 @@ using Polyclinic.Data;
 namespace Polyclinic.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20221122155057_Changes1")]
-    partial class Changes1
+    [Migration("20221122182023_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
