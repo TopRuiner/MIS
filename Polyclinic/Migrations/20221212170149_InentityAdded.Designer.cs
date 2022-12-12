@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Polyclinic.Data;
 
@@ -11,9 +12,10 @@ using Polyclinic.Data;
 namespace Polyclinic.Migrations
 {
     [DbContext(typeof(PolyclinicContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221212170149_InentityAdded")]
+    partial class InentityAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -194,11 +196,6 @@ namespace Polyclinic.Migrations
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<string>("MiddleName")
-                        .IsRequired()
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
-
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -268,6 +265,27 @@ namespace Polyclinic.Migrations
                     b.HasIndex("PatientId");
 
                     b.ToTable("Analyses");
+                });
+
+            modelBuilder.Entity("Polyclinic.Models.AppUser", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Nick")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AppUsers");
                 });
 
             modelBuilder.Entity("Polyclinic.Models.Assistant", b =>
@@ -412,6 +430,8 @@ namespace Polyclinic.Migrations
 
                     b.HasIndex("PolisID");
 
+                    b.HasIndex("UserID");
+
                     b.ToTable("Patients");
                 });
 
@@ -548,6 +568,14 @@ namespace Polyclinic.Migrations
                         .HasForeignKey("PolisID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("Polyclinic.Models.AppUser", "AppUser")
+                        .WithMany()
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AppUser");
 
                     b.Navigation("Polis");
                 });

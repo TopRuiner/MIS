@@ -11,7 +11,7 @@ using Polyclinic.Data;
 
 namespace Polyclinic.Migrations
 {
-    [DbContext(typeof(ApplicationDbContext))]
+    [DbContext(typeof(PolyclinicContext))]
     [Migration("20221122182023_InitialCreate")]
     partial class InitialCreate
     {

@@ -12,9 +12,9 @@ namespace Polyclinic.Controllers
 {
     public class ExaminationsController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly PolyclinicContext _context;
 
-        public ExaminationsController(ApplicationDbContext context)
+        public ExaminationsController(PolyclinicContext context)
         {
             _context = context;
         }

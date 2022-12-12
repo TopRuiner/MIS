@@ -9,7 +9,6 @@ namespace Polyclinic.Models
         public int Id { get; set; }
         [ForeignKey("AppUser")]
         public int UserID { get; set; }
-        public AppUser AppUser { get; set; }
         [ForeignKey("Polis")]
         public int PolisID { get; set; }
         public Polis Polis { get; set; }

@@ -1,17 +1,22 @@
 using Microsoft.EntityFrameworkCore;
 using Polyclinic.Data;
+using Microsoft.AspNetCore.Identity;
+using Polyclinic.Areas.Identity.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
+builder.Services.AddDbContext<PolyclinicContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
+builder.Services.AddDefaultIdentity<PolyclinicUser>(options => options.SignIn.RequireConfirmedAccount = false)
+    .AddEntityFrameworkStores<PolyclinicContext>();
 
-//Сервис для контекста
+
+//пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 builder.Services.AddSingleton<IHttpContextAccessor,HttpContextAccessor>();
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
@@ -33,6 +38,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseSession();
 app.UseRouting();
+app.UseAuthentication();;
 
 app.UseAuthorization();
 
@@ -40,4 +46,5 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
+app.MapRazorPages();
 app.Run();
