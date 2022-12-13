@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Polyclinic.Data;
 
@@ -11,9 +12,10 @@ using Polyclinic.Data;
 namespace Polyclinic.Migrations
 {
     [DbContext(typeof(PolyclinicContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221213115500_Init1")]
+    partial class Init1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -169,9 +171,11 @@ namespace Polyclinic.Migrations
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
+                        .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
@@ -200,14 +204,17 @@ namespace Polyclinic.Migrations
                         .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("NormalizedEmail")
+                        .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("NormalizedUserName")
+                        .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("PasswordHash")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
@@ -217,12 +224,14 @@ namespace Polyclinic.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("SecurityStamp")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
 
                     b.Property<string>("UserName")
+                        .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
@@ -233,8 +242,7 @@ namespace Polyclinic.Migrations
 
                     b.HasIndex("NormalizedUserName")
                         .IsUnique()
-                        .HasDatabaseName("UserNameIndex")
-                        .HasFilter("[NormalizedUserName] IS NOT NULL");
+                        .HasDatabaseName("UserNameIndex");
 
                     b.ToTable("AspNetUsers", (string)null);
                 });
@@ -278,10 +286,12 @@ namespace Polyclinic.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<string>("PolyclinicUserID")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("PolyclinicUserID");
 
                     b.ToTable("Assistants");
                 });
@@ -345,10 +355,12 @@ namespace Polyclinic.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<string>("PolyclinicUserID")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("PolyclinicUserID");
 
                     b.ToTable("FunctionalDiagnosticsDoctors");
                 });
@@ -399,10 +411,10 @@ namespace Polyclinic.Migrations
                     b.Property<int>("PolisID")
                         .HasColumnType("int");
 
-                    b.Property<int>("SnilsNumber")
-                        .HasColumnType("int");
+                    b.Property<string>("PolyclinicUserID")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("UserID")
+                    b.Property<int>("SnilsNumber")
                         .HasColumnType("int");
 
                     b.Property<string>("WorkPlace")
@@ -411,6 +423,8 @@ namespace Polyclinic.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("PolisID");
+
+                    b.HasIndex("PolyclinicUserID");
 
                     b.ToTable("Patients");
                 });
@@ -505,6 +519,15 @@ namespace Polyclinic.Migrations
                     b.Navigation("Patient");
                 });
 
+            modelBuilder.Entity("Polyclinic.Models.Assistant", b =>
+                {
+                    b.HasOne("Polyclinic.Areas.Identity.Data.PolyclinicUser", "PolyclinicUser")
+                        .WithMany()
+                        .HasForeignKey("PolyclinicUserID");
+
+                    b.Navigation("PolyclinicUser");
+                });
+
             modelBuilder.Entity("Polyclinic.Models.Examination", b =>
                 {
                     b.HasOne("Polyclinic.Models.FunctionalDiagnosticsDoctor", "FunctionalDiagnosticsDoctor")
@@ -522,6 +545,15 @@ namespace Polyclinic.Migrations
                     b.Navigation("FunctionalDiagnosticsDoctor");
 
                     b.Navigation("Patient");
+                });
+
+            modelBuilder.Entity("Polyclinic.Models.FunctionalDiagnosticsDoctor", b =>
+                {
+                    b.HasOne("Polyclinic.Areas.Identity.Data.PolyclinicUser", "PolyclinicUser")
+                        .WithMany()
+                        .HasForeignKey("PolyclinicUserID");
+
+                    b.Navigation("PolyclinicUser");
                 });
 
             modelBuilder.Entity("Polyclinic.Models.Inspection", b =>
@@ -549,7 +581,13 @@ namespace Polyclinic.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Polyclinic.Areas.Identity.Data.PolyclinicUser", "PolyclinicUser")
+                        .WithMany()
+                        .HasForeignKey("PolyclinicUserID");
+
                     b.Navigation("Polis");
+
+                    b.Navigation("PolyclinicUser");
                 });
 
             modelBuilder.Entity("Polyclinic.Models.Assistant", b =>

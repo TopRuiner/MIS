@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Polyclinic.Areas.Identity.Data;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Polyclinic.Models
@@ -7,8 +8,9 @@ namespace Polyclinic.Models
     {
         [Key]
         public int Id { get; set; }
-        [ForeignKey("AppUser")]
-        public int UserID { get; set; }
+        [ForeignKey("PolyclinicUser")]
+        public string? PolyclinicUserID { get; set; }
+        public PolyclinicUser? PolyclinicUser { get; set; }
         [ForeignKey("Polis")]
         public int PolisID { get; set; }
         public Polis Polis { get; set; }

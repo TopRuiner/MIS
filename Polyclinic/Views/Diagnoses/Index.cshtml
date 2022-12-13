@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h1>Index</h1>
@@ -9,6 +10,14 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+<form method="get" asp-action="Index">
+    <p>
+        <input type="search" placeholder="Введите диагноз или код МКБ" value="@ViewData[" GetDiagnosisDetails"]" name="DiagnosisSearch" style="width:700px;" />
+        <input type="submit" value="Search" class="btn btn-primary" />
+        <a asp-action="Index">Вывести все диагнозы</a>
+    </p>
+
+</form>
 <table class="table">
     <thead>
         <tr>

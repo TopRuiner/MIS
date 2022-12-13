@@ -24,6 +24,17 @@ namespace Polyclinic.Controllers
         {
               return View(await _context.Diagnoses.ToListAsync());
         }
+        [HttpGet]
+        public async Task<IActionResult> Index(string DiagnosisSearch)
+        {
+            ViewData["GetDiagnosisDetails"] = DiagnosisSearch;
+            var diagnosisQuerry = from x in _context.Diagnoses select(x);
+            if (!String.IsNullOrEmpty(DiagnosisSearch))
+            {
+                diagnosisQuerry = diagnosisQuerry.Where(x => x.Description.Contains(DiagnosisSearch) || x.MKB.Contains(DiagnosisSearch));
+            }
+            return View(await diagnosisQuerry.AsNoTracking().ToListAsync());
+        }
 
         // GET: Diagnoses/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -141,7 +152,7 @@ namespace Polyclinic.Controllers
         {
             if (_context.Diagnoses == null)
             {
-                return Problem("Entity set 'ApplicationDbContext.Diagnoses'  is null.");
+                return Problem("Entity set 'PolyclinicContext.Diagnoses'  is null.");
             }
             var diagnosis = await _context.Diagnoses.FindAsync(id);
             if (diagnosis != null)
