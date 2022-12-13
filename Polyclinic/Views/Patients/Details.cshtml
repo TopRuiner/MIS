@@ -1,38 +1,39 @@
-﻿@model Polyclinic.Models.Analysis
+﻿@model Polyclinic.Models.Patient
 
 @{
     ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h1>Details</h1>
 
 <div>
-    <h4>Analysis</h4>
+    <h4>Patient</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Patient)
+            @Html.DisplayNameFor(model => model.PolyclinicUser)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Patient.Id)
+            @Html.DisplayFor(model => model.PolyclinicUser.Id)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Type)
+            @Html.DisplayNameFor(model => model.Polis)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Type)
+            @Html.DisplayFor(model => model.Polis.Id)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
+            @Html.DisplayNameFor(model => model.SnilsNumber)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
+            @Html.DisplayFor(model => model.SnilsNumber)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Assistant)
+            @Html.DisplayNameFor(model => model.WorkPlace)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Assistant.Id)
+            @Html.DisplayFor(model => model.WorkPlace)
         </dd>
     </dl>
 </div>
