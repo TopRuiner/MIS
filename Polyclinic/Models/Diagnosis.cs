@@ -6,9 +6,7 @@ namespace Polyclinic.Models
     public class Diagnosis
     {
         [Key]
-        [ForeignKey("Inspection")]
-        public int Id { get; set; }
-        public string MKB { get; set; }
+        public string Id { get; set; }
         public string? Description { get; set; }
     }
 }

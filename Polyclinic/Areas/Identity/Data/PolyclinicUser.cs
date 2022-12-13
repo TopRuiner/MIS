@@ -10,9 +10,7 @@ namespace Polyclinic.Areas.Identity.Data;
 // Add profile data for application users by adding properties to the PolyclinicUser class
 public class PolyclinicUser : IdentityUser
 {
-    public string FirstName { get; set; }
-    public string LastName { get; set; }
-    public string MiddleName { get; set; }
+    
     [Key]
     public override string Id { get => base.Id; set => base.Id = value; }
     public override string UserName { get => base.UserName; set => base.UserName = value; }

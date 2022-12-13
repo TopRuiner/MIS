@@ -14,15 +14,15 @@
     <p>
         <input type="search" placeholder="Введите диагноз или код МКБ" value="@ViewData[" GetDiagnosisDetails"]" name="DiagnosisSearch" style="width:700px;" />
         <input type="submit" value="Search" class="btn btn-primary" />
-        <a asp-action="Index">Вывести все диагнозы</a>
+        <a asp-action="Index">Получить список всех диагнозов</a>
     </p>
-
 </form>
+
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.MKB)
+                @Html.DisplayNameFor(model => model.Id)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Description)
@@ -34,7 +34,7 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.MKB)
+                @Html.DisplayFor(modelItem => item.Id)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Description)

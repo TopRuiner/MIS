@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Polyclinic.Migrations
 {
-    public partial class Init1 : Migration
+    public partial class init1 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -55,9 +55,7 @@ namespace Polyclinic.Migrations
                 name: "Diagnoses",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    MKB = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
@@ -204,6 +202,27 @@ namespace Polyclinic.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Doctors",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PolyclinicUserID = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    Speciality = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Category = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Degree = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Doctors", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Doctors_AspNetUsers_PolyclinicUserID",
+                        column: x => x.PolyclinicUserID,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "FunctionalDiagnosticsDoctors",
                 columns: table => new
                 {
@@ -277,6 +296,156 @@ namespace Polyclinic.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "AnalysisReferrals",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DiagnosisId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    DoctorId = table.Column<int>(type: "int", nullable: false),
+                    PatientId = table.Column<int>(type: "int", nullable: true),
+                    Type = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AssistantId = table.Column<int>(type: "int", nullable: true),
+                    СabinetNum = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DateTime = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AnalysisReferrals", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AnalysisReferrals_Assistants_AssistantId",
+                        column: x => x.AssistantId,
+                        principalTable: "Assistants",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_AnalysisReferrals_Diagnoses_DiagnosisId",
+                        column: x => x.DiagnosisId,
+                        principalTable: "Diagnoses",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_AnalysisReferrals_Doctors_DoctorId",
+                        column: x => x.DoctorId,
+                        principalTable: "Doctors",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_AnalysisReferrals_Patients_PatientId",
+                        column: x => x.PatientId,
+                        principalTable: "Patients",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "DoctorAppointments",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PatientId = table.Column<int>(type: "int", nullable: false),
+                    CabinetId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DoctorId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DoctorAppointments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_DoctorAppointments_Doctors_DoctorId",
+                        column: x => x.DoctorId,
+                        principalTable: "Doctors",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_DoctorAppointments_Patients_PatientId",
+                        column: x => x.PatientId,
+                        principalTable: "Patients",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "DoctorReferrals",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DiagnosisId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    DoctorIdInitial = table.Column<int>(type: "int", nullable: false),
+                    DoctorInitialId = table.Column<int>(type: "int", nullable: false),
+                    PatientId = table.Column<int>(type: "int", nullable: true),
+                    Type = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DoctorIdTarget = table.Column<int>(type: "int", nullable: true),
+                    DoctorTargetId = table.Column<int>(type: "int", nullable: true),
+                    СabinetNum = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DateTime = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DoctorReferrals", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_DoctorReferrals_Diagnoses_DiagnosisId",
+                        column: x => x.DiagnosisId,
+                        principalTable: "Diagnoses",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_DoctorReferrals_Doctors_DoctorInitialId",
+                        column: x => x.DoctorInitialId,
+                        principalTable: "Doctors",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_DoctorReferrals_Doctors_DoctorTargetId",
+                        column: x => x.DoctorTargetId,
+                        principalTable: "Doctors",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_DoctorReferrals_Patients_PatientId",
+                        column: x => x.PatientId,
+                        principalTable: "Patients",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ExaminationReferrals",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DiagnosisId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    DoctorId = table.Column<int>(type: "int", nullable: false),
+                    PatientId = table.Column<int>(type: "int", nullable: true),
+                    Type = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FunctionalDiagnosticsDoctorId = table.Column<int>(type: "int", nullable: true),
+                    СabinetNum = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DateTime = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ExaminationReferrals", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ExaminationReferrals_Diagnoses_DiagnosisId",
+                        column: x => x.DiagnosisId,
+                        principalTable: "Diagnoses",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_ExaminationReferrals_Doctors_DoctorId",
+                        column: x => x.DoctorId,
+                        principalTable: "Doctors",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ExaminationReferrals_FunctionalDiagnosticsDoctors_FunctionalDiagnosticsDoctorId",
+                        column: x => x.FunctionalDiagnosticsDoctorId,
+                        principalTable: "FunctionalDiagnosticsDoctors",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_ExaminationReferrals_Patients_PatientId",
+                        column: x => x.PatientId,
+                        principalTable: "Patients",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Examinations",
                 columns: table => new
                 {
@@ -314,8 +483,10 @@ namespace Polyclinic.Migrations
                     Complaint = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Data = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Appointment = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DiagnosisId = table.Column<int>(type: "int", nullable: true),
-                    Date = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    DiagnosisId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DoctorId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -324,6 +495,11 @@ namespace Polyclinic.Migrations
                         name: "FK_Inspections_Diagnoses_DiagnosisId",
                         column: x => x.DiagnosisId,
                         principalTable: "Diagnoses",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Inspections_Doctors_DoctorId",
+                        column: x => x.DoctorId,
+                        principalTable: "Doctors",
                         principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Inspections_Patients_PatientID",
@@ -341,6 +517,26 @@ namespace Polyclinic.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Analyses_PatientId",
                 table: "Analyses",
+                column: "PatientId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AnalysisReferrals_AssistantId",
+                table: "AnalysisReferrals",
+                column: "AssistantId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AnalysisReferrals_DiagnosisId",
+                table: "AnalysisReferrals",
+                column: "DiagnosisId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AnalysisReferrals_DoctorId",
+                table: "AnalysisReferrals",
+                column: "DoctorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AnalysisReferrals_PatientId",
+                table: "AnalysisReferrals",
                 column: "PatientId");
 
             migrationBuilder.CreateIndex(
@@ -387,6 +583,61 @@ namespace Polyclinic.Migrations
                 column: "PolyclinicUserID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_DoctorAppointments_DoctorId",
+                table: "DoctorAppointments",
+                column: "DoctorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DoctorAppointments_PatientId",
+                table: "DoctorAppointments",
+                column: "PatientId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DoctorReferrals_DiagnosisId",
+                table: "DoctorReferrals",
+                column: "DiagnosisId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DoctorReferrals_DoctorInitialId",
+                table: "DoctorReferrals",
+                column: "DoctorInitialId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DoctorReferrals_DoctorTargetId",
+                table: "DoctorReferrals",
+                column: "DoctorTargetId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DoctorReferrals_PatientId",
+                table: "DoctorReferrals",
+                column: "PatientId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Doctors_PolyclinicUserID",
+                table: "Doctors",
+                column: "PolyclinicUserID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ExaminationReferrals_DiagnosisId",
+                table: "ExaminationReferrals",
+                column: "DiagnosisId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ExaminationReferrals_DoctorId",
+                table: "ExaminationReferrals",
+                column: "DoctorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ExaminationReferrals_FunctionalDiagnosticsDoctorId",
+                table: "ExaminationReferrals",
+                column: "FunctionalDiagnosticsDoctorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ExaminationReferrals_PatientId",
+                table: "ExaminationReferrals",
+                column: "PatientId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Examinations_FunctionalDiagnosticsDoctorId",
                 table: "Examinations",
                 column: "FunctionalDiagnosticsDoctorId");
@@ -405,6 +656,11 @@ namespace Polyclinic.Migrations
                 name: "IX_Inspections_DiagnosisId",
                 table: "Inspections",
                 column: "DiagnosisId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Inspections_DoctorId",
+                table: "Inspections",
+                column: "DoctorId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Inspections_PatientID",
@@ -428,6 +684,9 @@ namespace Polyclinic.Migrations
                 name: "Analyses");
 
             migrationBuilder.DropTable(
+                name: "AnalysisReferrals");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
             migrationBuilder.DropTable(
@@ -441,6 +700,15 @@ namespace Polyclinic.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "DoctorAppointments");
+
+            migrationBuilder.DropTable(
+                name: "DoctorReferrals");
+
+            migrationBuilder.DropTable(
+                name: "ExaminationReferrals");
 
             migrationBuilder.DropTable(
                 name: "Examinations");
@@ -459,6 +727,9 @@ namespace Polyclinic.Migrations
 
             migrationBuilder.DropTable(
                 name: "Diagnoses");
+
+            migrationBuilder.DropTable(
+                name: "Doctors");
 
             migrationBuilder.DropTable(
                 name: "Patients");

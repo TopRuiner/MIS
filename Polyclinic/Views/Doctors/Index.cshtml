@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Polyclinic.Models.Patient>
+﻿@model IEnumerable<Polyclinic.Models.Doctor>
 
 @{
     ViewData["Title"] = "Index";
@@ -26,13 +26,13 @@
                 @Html.DisplayNameFor(model => model.PolyclinicUser)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Polis)
+                @Html.DisplayNameFor(model => model.Speciality)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.SnilsNumber)
+                @Html.DisplayNameFor(model => model.Category)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.WorkPlace)
+                @Html.DisplayNameFor(model => model.Degree)
             </th>
             <th></th>
         </tr>
@@ -53,13 +53,13 @@
                 @Html.DisplayFor(modelItem => item.PolyclinicUser.Id)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Polis.Id)
+                @Html.DisplayFor(modelItem => item.Speciality)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.SnilsNumber)
+                @Html.DisplayFor(modelItem => item.Category)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.WorkPlace)
+                @Html.DisplayFor(modelItem => item.Degree)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

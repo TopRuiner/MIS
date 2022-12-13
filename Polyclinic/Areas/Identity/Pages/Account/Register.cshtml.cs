@@ -71,17 +71,6 @@ namespace Polyclinic.Areas.Identity.Pages.Account
         /// </summary>
         public class InputModel
         {
-            [Required]
-            [StringLength(128, ErrorMessage = "The first name field should have maximum 128 charachters")]
-            [Display(Name = "FirstName")]
-            public string FirstName { get; set; }
-            [Required]
-            [StringLength(128, ErrorMessage = "The last name field should have maximum 128 charachters")]
-            [Display(Name = "LastName")]
-            public string LastName { get; set; }
-            [Display(Name = "MiddleName")]
-            [StringLength(128, ErrorMessage = "The middle name field should have maximum 128 charachters")]
-            public string MiddleName { get; set; }
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
@@ -125,10 +114,6 @@ namespace Polyclinic.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var user = CreateUser();
-
-                user.FirstName = Input.FirstName;
-                user.LastName = Input.LastName;
-                user.MiddleName= Input.MiddleName;
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
                 var result = await _userManager.CreateAsync(user, Input.Password);

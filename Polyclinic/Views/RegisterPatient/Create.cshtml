@@ -1,13 +1,19 @@
-﻿@model Polyclinic.Models.Patient
-
+﻿@using Polyclinic.Areas.Identity.Data;
+@model Polyclinic.Models.Patient
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Delete";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@inject Microsoft.AspNetCore.Identity.UserManager<PolyclinicUser> _userManager
+@{
+    string userId = _userManager.GetUserId(User);
+}
+<h1>Регистрация как пациент</h1>
 
-<h1>Create</h1>
-
-<h4>Patient</h4>
+<h4>Пациент</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -30,21 +36,8 @@
             </div>
             <div class="form-group">
                 <label asp-for="PolyclinicUserID" class="control-label"></label>
-                <select asp-for="PolyclinicUserID" class ="form-control" asp-items="ViewBag.PolyclinicUserID"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="PolisID" class="control-label"></label>
-                <select asp-for="PolisID" class ="form-control" asp-items="ViewBag.PolisID"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="SnilsNumber" class="control-label"></label>
-                <input asp-for="SnilsNumber" class="form-control" />
-                <span asp-validation-for="SnilsNumber" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="WorkPlace" class="control-label"></label>
-                <input asp-for="WorkPlace" class="form-control" />
-                <span asp-validation-for="WorkPlace" class="text-danger"></span>
+                <input asp-for="PolyclinicUserID" class="form-control" value=@userId readonly/>
+                <span asp-validation-for="PolyclinicUserID" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
@@ -52,11 +45,3 @@
         </form>
     </div>
 </div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}

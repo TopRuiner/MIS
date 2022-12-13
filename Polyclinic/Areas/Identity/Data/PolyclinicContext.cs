@@ -22,6 +22,11 @@ public class PolyclinicContext : IdentityDbContext<PolyclinicUser>
     public DbSet<FunctionalDiagnosticsDoctor> FunctionalDiagnosticsDoctors { get; set; }
     public DbSet<Inspection> Inspections { get; set; }
     public DbSet<Polis> Polises { get; set; }
+    public DbSet<AnalysisReferral> AnalysisReferrals { get; set; }
+    public DbSet<Doctor> Doctors { get; set; }
+    public DbSet<DoctorAppointment> DoctorAppointments { get; set; }
+    public DbSet<DoctorReferral> DoctorReferrals { get; set; }
+    public DbSet<ExaminationReferral> ExaminationReferrals { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -37,8 +42,5 @@ internal class ApplicationUserEntityConfiguration : IEntityTypeConfiguration<Pol
 {
     public void Configure(EntityTypeBuilder<PolyclinicUser> builder)
     {
-        builder.Property(u => u.FirstName).HasMaxLength(128);
-        builder.Property(u => u.LastName).HasMaxLength(128);
-        builder.Property(u => u.MiddleName).HasMaxLength(128);
     }
 }

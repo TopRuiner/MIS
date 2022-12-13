@@ -25,19 +25,19 @@ namespace Polyclinic.Controllers
               return View(await _context.Diagnoses.ToListAsync());
         }
         [HttpGet]
-        public async Task<IActionResult> Index(string DiagnosisSearch)
+        public async Task<IActionResult> Index(string diagnosisSearch)
         {
-            ViewData["GetDiagnosisDetails"] = DiagnosisSearch;
-            var diagnosisQuerry = from x in _context.Diagnoses select(x);
-            if (!String.IsNullOrEmpty(DiagnosisSearch))
+            ViewData["GetDiagnosisDetails"] = diagnosisSearch;
+            var diagnosisQuery = from x in _context.Diagnoses select x;
+            if (!String.IsNullOrEmpty(diagnosisSearch))
             {
-                diagnosisQuerry = diagnosisQuerry.Where(x => x.Description.Contains(DiagnosisSearch) || x.MKB.Contains(DiagnosisSearch));
+                diagnosisQuery = diagnosisQuery.Where(x => x.Id.Contains(diagnosisSearch) || x.Description.Contains(diagnosisSearch));
             }
-            return View(await diagnosisQuerry.AsNoTracking().ToListAsync());
+            return View(await diagnosisQuery.AsNoTracking().ToListAsync());
         }
 
         // GET: Diagnoses/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(string id)
         {
             if (id == null || _context.Diagnoses == null)
             {
@@ -65,7 +65,7 @@ namespace Polyclinic.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,MKB,Description")] Diagnosis diagnosis)
+        public async Task<IActionResult> Create([Bind("Id,Description")] Diagnosis diagnosis)
         {
             if (ModelState.IsValid)
             {
@@ -77,7 +77,7 @@ namespace Polyclinic.Controllers
         }
 
         // GET: Diagnoses/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(string id)
         {
             if (id == null || _context.Diagnoses == null)
             {
@@ -97,7 +97,7 @@ namespace Polyclinic.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,MKB,Description")] Diagnosis diagnosis)
+        public async Task<IActionResult> Edit(string id, [Bind("Id,Description")] Diagnosis diagnosis)
         {
             if (id != diagnosis.Id)
             {
@@ -128,7 +128,7 @@ namespace Polyclinic.Controllers
         }
 
         // GET: Diagnoses/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(string id)
         {
             if (id == null || _context.Diagnoses == null)
             {
@@ -148,7 +148,7 @@ namespace Polyclinic.Controllers
         // POST: Diagnoses/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(string id)
         {
             if (_context.Diagnoses == null)
             {
@@ -164,7 +164,7 @@ namespace Polyclinic.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool DiagnosisExists(int id)
+        private bool DiagnosisExists(string id)
         {
           return _context.Diagnoses.Any(e => e.Id == id);
         }

@@ -8,6 +8,9 @@ namespace Polyclinic.Models
     {
         [Key]
         public int Id { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string MiddleName { get; set; }
         [ForeignKey("PolyclinicUser")]
         public string? PolyclinicUserID { get; set; }
         public PolyclinicUser? PolyclinicUser { get; set; }

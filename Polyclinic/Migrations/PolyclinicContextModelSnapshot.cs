@@ -180,26 +180,11 @@ namespace Polyclinic.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
-
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("MiddleName")
-                        .IsRequired()
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("NormalizedEmail")
                         .IsRequired()
@@ -276,6 +261,48 @@ namespace Polyclinic.Migrations
                     b.ToTable("Analyses");
                 });
 
+            modelBuilder.Entity("Polyclinic.Models.AnalysisReferral", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int?>("AssistantId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DiagnosisId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("DoctorId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("PatientId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Type")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("СabinetNum")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AssistantId");
+
+                    b.HasIndex("DiagnosisId");
+
+                    b.HasIndex("DoctorId");
+
+                    b.HasIndex("PatientId");
+
+                    b.ToTable("AnalysisReferrals");
+                });
+
             modelBuilder.Entity("Polyclinic.Models.Assistant", b =>
                 {
                     b.Property<int>("Id")
@@ -283,6 +310,18 @@ namespace Polyclinic.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MiddleName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PolyclinicUserID")
                         .HasColumnType("nvarchar(450)");
@@ -296,17 +335,10 @@ namespace Polyclinic.Migrations
 
             modelBuilder.Entity("Polyclinic.Models.Diagnosis", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("MKB")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -328,6 +360,18 @@ namespace Polyclinic.Migrations
                     b.Property<string>("Degree")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MiddleName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("PolyclinicUserID")
                         .HasColumnType("nvarchar(450)");
 
@@ -339,7 +383,87 @@ namespace Polyclinic.Migrations
 
                     b.HasIndex("PolyclinicUserID");
 
-                    b.ToTable("Doctor");
+                    b.ToTable("Doctors");
+                });
+
+            modelBuilder.Entity("Polyclinic.Models.DoctorAppointment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("CabinetId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("DateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("DoctorId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PatientId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DoctorId");
+
+                    b.HasIndex("PatientId");
+
+                    b.ToTable("DoctorAppointments");
+                });
+
+            modelBuilder.Entity("Polyclinic.Models.DoctorReferral", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime?>("DateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DiagnosisId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("DoctorIdInitial")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("DoctorIdTarget")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DoctorInitialId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("DoctorTargetId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("PatientId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Type")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("СabinetNum")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DiagnosisId");
+
+                    b.HasIndex("DoctorInitialId");
+
+                    b.HasIndex("DoctorTargetId");
+
+                    b.HasIndex("PatientId");
+
+                    b.ToTable("DoctorReferrals");
                 });
 
             modelBuilder.Entity("Polyclinic.Models.Examination", b =>
@@ -373,6 +497,48 @@ namespace Polyclinic.Migrations
                     b.ToTable("Examinations");
                 });
 
+            modelBuilder.Entity("Polyclinic.Models.ExaminationReferral", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime?>("DateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DiagnosisId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("DoctorId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("FunctionalDiagnosticsDoctorId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("PatientId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Type")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("СabinetNum")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DiagnosisId");
+
+                    b.HasIndex("DoctorId");
+
+                    b.HasIndex("FunctionalDiagnosticsDoctorId");
+
+                    b.HasIndex("PatientId");
+
+                    b.ToTable("ExaminationReferrals");
+                });
+
             modelBuilder.Entity("Polyclinic.Models.FunctionalDiagnosticsDoctor", b =>
                 {
                     b.Property<int>("Id")
@@ -380,6 +546,18 @@ namespace Polyclinic.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MiddleName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PolyclinicUserID")
                         .HasColumnType("nvarchar(450)");
@@ -411,8 +589,8 @@ namespace Polyclinic.Migrations
                     b.Property<DateTime?>("Date")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("DiagnosisId")
-                        .HasColumnType("int");
+                    b.Property<string>("DiagnosisId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int?>("DoctorId")
                         .HasColumnType("int");
@@ -442,6 +620,18 @@ namespace Polyclinic.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MiddleName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("PolisID")
                         .HasColumnType("int");
@@ -554,6 +744,35 @@ namespace Polyclinic.Migrations
                     b.Navigation("Patient");
                 });
 
+            modelBuilder.Entity("Polyclinic.Models.AnalysisReferral", b =>
+                {
+                    b.HasOne("Polyclinic.Models.Assistant", "Assistant")
+                        .WithMany()
+                        .HasForeignKey("AssistantId");
+
+                    b.HasOne("Polyclinic.Models.Diagnosis", "Diagnosis")
+                        .WithMany()
+                        .HasForeignKey("DiagnosisId");
+
+                    b.HasOne("Polyclinic.Models.Doctor", "Doctor")
+                        .WithMany()
+                        .HasForeignKey("DoctorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Polyclinic.Models.Patient", "Patient")
+                        .WithMany()
+                        .HasForeignKey("PatientId");
+
+                    b.Navigation("Assistant");
+
+                    b.Navigation("Diagnosis");
+
+                    b.Navigation("Doctor");
+
+                    b.Navigation("Patient");
+                });
+
             modelBuilder.Entity("Polyclinic.Models.Assistant", b =>
                 {
                     b.HasOne("Polyclinic.Areas.Identity.Data.PolyclinicUser", "PolyclinicUser")
@@ -572,6 +791,52 @@ namespace Polyclinic.Migrations
                     b.Navigation("PolyclinicUser");
                 });
 
+            modelBuilder.Entity("Polyclinic.Models.DoctorAppointment", b =>
+                {
+                    b.HasOne("Polyclinic.Models.Doctor", "Doctor")
+                        .WithMany()
+                        .HasForeignKey("DoctorId");
+
+                    b.HasOne("Polyclinic.Models.Patient", "Patient")
+                        .WithMany()
+                        .HasForeignKey("PatientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Doctor");
+
+                    b.Navigation("Patient");
+                });
+
+            modelBuilder.Entity("Polyclinic.Models.DoctorReferral", b =>
+                {
+                    b.HasOne("Polyclinic.Models.Diagnosis", "Diagnosis")
+                        .WithMany()
+                        .HasForeignKey("DiagnosisId");
+
+                    b.HasOne("Polyclinic.Models.Doctor", "DoctorInitial")
+                        .WithMany()
+                        .HasForeignKey("DoctorInitialId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Polyclinic.Models.Doctor", "DoctorTarget")
+                        .WithMany()
+                        .HasForeignKey("DoctorTargetId");
+
+                    b.HasOne("Polyclinic.Models.Patient", "Patient")
+                        .WithMany()
+                        .HasForeignKey("PatientId");
+
+                    b.Navigation("Diagnosis");
+
+                    b.Navigation("DoctorInitial");
+
+                    b.Navigation("DoctorTarget");
+
+                    b.Navigation("Patient");
+                });
+
             modelBuilder.Entity("Polyclinic.Models.Examination", b =>
                 {
                     b.HasOne("Polyclinic.Models.FunctionalDiagnosticsDoctor", "FunctionalDiagnosticsDoctor")
@@ -585,6 +850,35 @@ namespace Polyclinic.Migrations
                         .HasForeignKey("PatientId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("FunctionalDiagnosticsDoctor");
+
+                    b.Navigation("Patient");
+                });
+
+            modelBuilder.Entity("Polyclinic.Models.ExaminationReferral", b =>
+                {
+                    b.HasOne("Polyclinic.Models.Diagnosis", "Diagnosis")
+                        .WithMany()
+                        .HasForeignKey("DiagnosisId");
+
+                    b.HasOne("Polyclinic.Models.Doctor", "Doctor")
+                        .WithMany()
+                        .HasForeignKey("DoctorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Polyclinic.Models.FunctionalDiagnosticsDoctor", "FunctionalDiagnosticsDoctor")
+                        .WithMany()
+                        .HasForeignKey("FunctionalDiagnosticsDoctorId");
+
+                    b.HasOne("Polyclinic.Models.Patient", "Patient")
+                        .WithMany()
+                        .HasForeignKey("PatientId");
+
+                    b.Navigation("Diagnosis");
+
+                    b.Navigation("Doctor");
 
                     b.Navigation("FunctionalDiagnosticsDoctor");
 

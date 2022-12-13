@@ -1,4 +1,4 @@
-﻿@model Polyclinic.Models.Patient
+﻿@model Polyclinic.Models.Doctor
 
 @{
     ViewData["Title"] = "Create";
@@ -7,7 +7,7 @@
 
 <h1>Create</h1>
 
-<h4>Patient</h4>
+<h4>Doctor</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -33,18 +33,19 @@
                 <select asp-for="PolyclinicUserID" class ="form-control" asp-items="ViewBag.PolyclinicUserID"></select>
             </div>
             <div class="form-group">
-                <label asp-for="PolisID" class="control-label"></label>
-                <select asp-for="PolisID" class ="form-control" asp-items="ViewBag.PolisID"></select>
+                <label asp-for="Speciality" class="control-label"></label>
+                <input asp-for="Speciality" class="form-control" />
+                <span asp-validation-for="Speciality" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="SnilsNumber" class="control-label"></label>
-                <input asp-for="SnilsNumber" class="form-control" />
-                <span asp-validation-for="SnilsNumber" class="text-danger"></span>
+                <label asp-for="Category" class="control-label"></label>
+                <input asp-for="Category" class="form-control" />
+                <span asp-validation-for="Category" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="WorkPlace" class="control-label"></label>
-                <input asp-for="WorkPlace" class="form-control" />
-                <span asp-validation-for="WorkPlace" class="text-danger"></span>
+                <label asp-for="Degree" class="control-label"></label>
+                <input asp-for="Degree" class="form-control" />
+                <span asp-validation-for="Degree" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
