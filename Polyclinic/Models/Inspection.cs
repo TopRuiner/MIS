@@ -17,7 +17,10 @@ namespace Polyclinic.Models
         public int? DiagnosisId { get; set; }
         public Diagnosis? Diagnosis { get; set; }
         public DateTime? Date { get; set; }
-
+        public string Type { get; set; }
+        [ForeignKey("Doctor")]
+        public int? DoctorId { get; set; }
+        public Doctor? Doctor { get; set; }
 
     }
 }
