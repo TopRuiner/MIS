@@ -59,17 +59,33 @@ namespace Polyclinic.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,MiddleName,PolyclinicUserID,PolisID,SnilsNumber,WorkPlace")] Patient patient)
+        public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,MiddleName,BirthDate,PolyclinicUserID,PolisID,SnilsNumber,WorkPlace")] Patient patient)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(patient);
+                /*
+                if (_context.Polises.FindAsync(patient.PolisID) != null && _context.Patients.Where(s => s.PolisID == patient.PolisID).FirstOrDefaultAsync() == null)
+                {
+                    _context.Add(patient);
+                    await _context.SaveChangesAsync();
+                    return Redirect("~/");
+                }
+                else
+                {
+                    ModelState.AddModelError("error_msg", "Введенный номер полиса уже занят или его не существует в системе");
+                    ModelState.AddModelError("info_msg", "Для регистрации как пациент Вам необходимо сначала ввести данные своего полиса на страцнице регистрации пациента");
+                    //return Redirect("~/123");
+                    return View(patient);
+                }
+                */
+                _context.Patients.Add(patient);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return Redirect("~/");
             }
             ViewData["PolisID"] = new SelectList(_context.Polises, "Id", "Id", patient.PolisID);
             ViewData["PolyclinicUserID"] = new SelectList(_context.Users, "Id", "Id", patient.PolyclinicUserID);
-            return View(patient);
+            return Redirect("~/");
+            //return View(patient);
         }
 
         // GET: Patients/Edit/5
@@ -95,7 +111,7 @@ namespace Polyclinic.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,LastName,MiddleName,PolyclinicUserID,PolisID,SnilsNumber,WorkPlace")] Patient patient)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,LastName,MiddleName,BirthDate,PolyclinicUserID,PolisID,SnilsNumber,WorkPlace")] Patient patient)
         {
             if (id != patient.Id)
             {

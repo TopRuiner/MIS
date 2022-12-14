@@ -10,90 +10,90 @@ using Polyclinic.Models;
 
 namespace Polyclinic.Controllers
 {
-    public class DoctorsController : Controller
+    public class AssistantsController : Controller
     {
         private readonly PolyclinicContext _context;
 
-        public DoctorsController(PolyclinicContext context)
+        public AssistantsController(PolyclinicContext context)
         {
             _context = context;
         }
 
-        // GET: Doctors
+        // GET: Assistants
         public async Task<IActionResult> Index()
         {
-            var polyclinicContext = _context.Doctors.Include(d => d.PolyclinicUser);
+            var polyclinicContext = _context.Assistants.Include(a => a.PolyclinicUser);
             return View(await polyclinicContext.ToListAsync());
         }
 
-        // GET: Doctors/Details/5
+        // GET: Assistants/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Doctors == null)
+            if (id == null || _context.Assistants == null)
             {
                 return NotFound();
             }
 
-            var doctor = await _context.Doctors
-                .Include(d => d.PolyclinicUser)
+            var assistant = await _context.Assistants
+                .Include(a => a.PolyclinicUser)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (doctor == null)
+            if (assistant == null)
             {
                 return NotFound();
             }
 
-            return View(doctor);
+            return View(assistant);
         }
 
-        // GET: Doctors/Create
+        // GET: Assistants/Create
         public IActionResult Create()
         {
             ViewData["PolyclinicUserID"] = new SelectList(_context.Users, "Id", "Id");
             return View();
         }
 
-        // POST: Doctors/Create
+        // POST: Assistants/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,MiddleName,BirthDate,PolyclinicUserID,Speciality,Category,Degree")] Doctor doctor)
+        public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,MiddleName,BirthDate,PolyclinicUserID")] Assistant assistant)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(doctor);
+                _context.Add(assistant);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PolyclinicUserID"] = new SelectList(_context.Users, "Id", "Id", doctor.PolyclinicUserID);
-            return View(doctor);
+            ViewData["PolyclinicUserID"] = new SelectList(_context.Users, "Id", "Id", assistant.PolyclinicUserID);
+            return View(assistant);
         }
 
-        // GET: Doctors/Edit/5
+        // GET: Assistants/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Doctors == null)
+            if (id == null || _context.Assistants == null)
             {
                 return NotFound();
             }
 
-            var doctor = await _context.Doctors.FindAsync(id);
-            if (doctor == null)
+            var assistant = await _context.Assistants.FindAsync(id);
+            if (assistant == null)
             {
                 return NotFound();
             }
-            ViewData["PolyclinicUserID"] = new SelectList(_context.Users, "Id", "Id", doctor.PolyclinicUserID);
-            return View(doctor);
+            ViewData["PolyclinicUserID"] = new SelectList(_context.Users, "Id", "Id", assistant.PolyclinicUserID);
+            return View(assistant);
         }
 
-        // POST: Doctors/Edit/5
+        // POST: Assistants/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,LastName,MiddleName,BirthDate,PolyclinicUserID,Speciality,Category,Degree")] Doctor doctor)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,LastName,MiddleName,BirthDate,PolyclinicUserID")] Assistant assistant)
         {
-            if (id != doctor.Id)
+            if (id != assistant.Id)
             {
                 return NotFound();
             }
@@ -102,12 +102,12 @@ namespace Polyclinic.Controllers
             {
                 try
                 {
-                    _context.Update(doctor);
+                    _context.Update(assistant);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!DoctorExists(doctor.Id))
+                    if (!AssistantExists(assistant.Id))
                     {
                         return NotFound();
                     }
@@ -118,51 +118,51 @@ namespace Polyclinic.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PolyclinicUserID"] = new SelectList(_context.Users, "Id", "Id", doctor.PolyclinicUserID);
-            return View(doctor);
+            ViewData["PolyclinicUserID"] = new SelectList(_context.Users, "Id", "Id", assistant.PolyclinicUserID);
+            return View(assistant);
         }
 
-        // GET: Doctors/Delete/5
+        // GET: Assistants/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Doctors == null)
+            if (id == null || _context.Assistants == null)
             {
                 return NotFound();
             }
 
-            var doctor = await _context.Doctors
-                .Include(d => d.PolyclinicUser)
+            var assistant = await _context.Assistants
+                .Include(a => a.PolyclinicUser)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (doctor == null)
+            if (assistant == null)
             {
                 return NotFound();
             }
 
-            return View(doctor);
+            return View(assistant);
         }
 
-        // POST: Doctors/Delete/5
+        // POST: Assistants/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Doctors == null)
+            if (_context.Assistants == null)
             {
-                return Problem("Entity set 'PolyclinicContext.Doctors'  is null.");
+                return Problem("Entity set 'PolyclinicContext.Assistants'  is null.");
             }
-            var doctor = await _context.Doctors.FindAsync(id);
-            if (doctor != null)
+            var assistant = await _context.Assistants.FindAsync(id);
+            if (assistant != null)
             {
-                _context.Doctors.Remove(doctor);
+                _context.Assistants.Remove(assistant);
             }
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool DoctorExists(int id)
+        private bool AssistantExists(int id)
         {
-          return _context.Doctors.Any(e => e.Id == id);
+          return _context.Assistants.Any(e => e.Id == id);
         }
     }
 }

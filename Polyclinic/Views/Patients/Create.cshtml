@@ -1,18 +1,31 @@
-﻿@model Polyclinic.Models.Patient
+﻿@using Polyclinic.Areas.Identity.Data;
+@using Polyclinic.Models;
+@model Polyclinic.Models.Patient
 
 @{
     ViewData["Title"] = "Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+@inject Microsoft.AspNetCore.Identity.UserManager<PolyclinicUser> _userManager
+@{
+    string userId = _userManager.GetUserId(User);
+}
 <h1>Create</h1>
 
 <h4>Patient</h4>
 <hr />
+@ViewBag.error
+<p style="color:red;">@Html.ValidationMessage("error_msg")</p>
+<p style="color:yellow;">@Html.ValidationMessage("info_msg")</p>
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="PolyclinicUserID" class="control-label"></label>
+                <input asp-for="PolyclinicUserID" class="form-control" value=@userId readonly />
+                <span asp-validation-for="PolyclinicUserID" class="text-danger"></span>
+            </div>
             <div class="form-group">
                 <label asp-for="FirstName" class="control-label"></label>
                 <input asp-for="FirstName" class="form-control" />
@@ -29,12 +42,13 @@
                 <span asp-validation-for="MiddleName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="PolyclinicUserID" class="control-label"></label>
-                <select asp-for="PolyclinicUserID" class ="form-control" asp-items="ViewBag.PolyclinicUserID"></select>
+                <label asp-for="BirthDate" class="control-label"></label>
+                <input type="date" asp-for="BirthDate" class="form-control" />
+                <span asp-validation-for="BirthDate" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="PolisID" class="control-label"></label>
-                <select asp-for="PolisID" class ="form-control" asp-items="ViewBag.PolisID"></select>
+                <label class="control-label">Номер полиса</label>
+                <input asp-for="PolisID" class="form-control" />
             </div>
             <div class="form-group">
                 <label asp-for="SnilsNumber" class="control-label"></label>

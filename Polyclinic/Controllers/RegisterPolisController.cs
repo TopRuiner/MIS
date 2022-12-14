@@ -6,54 +6,53 @@ using Polyclinic.Models;
 
 namespace Polyclinic.Controllers
 {
-    public class RegisterPatientController : Controller
+    public class RegisterPolisController : Controller
     {
         private readonly PolyclinicContext _context;
 
-        public RegisterPatientController(PolyclinicContext context)
+        public RegisterPolisController(PolyclinicContext context)
         {
             _context = context;
         }
-        // GET: RegisterPatientController
+        // GET: RegisterPolisController
         public ActionResult Index()
         {
             return View();
         }
 
-        // GET: RegisterPatientController/Details/5
+        // GET: RegisterPolisController/Details/5
         public ActionResult Details(int id)
         {
             return View();
         }
 
-        // GET: RegisterPatientController/Create
+        // GET: RegisterPolisController/Create
         public ActionResult Create()
         {
-
             return View();
         }
 
-        // POST: RegisterPatientController/Create
+        // POST: RegisterPolisController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,MiddleName,BirthDate,PolyclinicUserID,PolisID,SnilsNumber,WorkPlace")] Patient patient)
+        public async Task<IActionResult> Create([Bind("Polis.Id,Polis.Company,Polis.EndDate")] Polis polis)
         {
             if (ModelState.IsValid)
             {
-                _context.Patients.Add(patient);
+                _context.Polises.Add(polis);
                 await _context.SaveChangesAsync();
-                return Redirect("~/");
+                return Redirect("~/Doctors");
             }
-            return View(patient);
+            return View(polis);
         }
 
-        // GET: RegisterPatientController/Edit/5
+        // GET: RegisterPolisController/Edit/5
         public ActionResult Edit(int id)
         {
             return View();
         }
 
-        // POST: RegisterPatientController/Edit/5
+        // POST: RegisterPolisController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, IFormCollection collection)
@@ -68,13 +67,13 @@ namespace Polyclinic.Controllers
             }
         }
 
-        // GET: RegisterPatientController/Delete/5
+        // GET: RegisterPolisController/Delete/5
         public ActionResult Delete(int id)
         {
             return View();
         }
 
-        // POST: RegisterPatientController/Delete/5
+        // POST: RegisterPolisController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, IFormCollection collection)
