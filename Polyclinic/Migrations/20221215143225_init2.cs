@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Polyclinic.Migrations
 {
-    public partial class init1 : Migration
+    public partial class init2 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -58,19 +58,6 @@ namespace Polyclinic.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Diagnoses", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Polises",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false),
-                    Company = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    EndDate = table.Column<DateTime>(type: "date", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Polises", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -256,10 +243,12 @@ namespace Polyclinic.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    MiddleName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    MiddleName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     BirthDate = table.Column<DateTime>(type: "date", nullable: true),
                     PolyclinicUserID = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     PolisID = table.Column<int>(type: "int", nullable: false),
+                    PoilsCompany = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PolisEndDate = table.Column<DateTime>(type: "date", nullable: false),
                     SnilsNumber = table.Column<int>(type: "int", nullable: false),
                     WorkPlace = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
@@ -271,12 +260,6 @@ namespace Polyclinic.Migrations
                         column: x => x.PolyclinicUserID,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Patients_Polises_PolisID",
-                        column: x => x.PolisID,
-                        principalTable: "Polises",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -680,11 +663,6 @@ namespace Polyclinic.Migrations
                 column: "PatientID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Patients_PolisID",
-                table: "Patients",
-                column: "PolisID");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Patients_PolyclinicUserID",
                 table: "Patients",
                 column: "PolyclinicUserID");
@@ -748,9 +726,6 @@ namespace Polyclinic.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
-
-            migrationBuilder.DropTable(
-                name: "Polises");
         }
     }
 }

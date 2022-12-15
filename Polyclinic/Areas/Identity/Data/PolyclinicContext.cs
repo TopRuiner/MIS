@@ -21,7 +21,6 @@ public class PolyclinicContext : IdentityDbContext<PolyclinicUser>
     public DbSet<Examination> Examinations { get; set; }
     public DbSet<FunctionalDiagnosticsDoctor> FunctionalDiagnosticsDoctors { get; set; }
     public DbSet<Inspection> Inspections { get; set; }
-    public DbSet<Polis> Polises { get; set; }
     public DbSet<AnalysisReferral> AnalysisReferrals { get; set; }
     public DbSet<Doctor> Doctors { get; set; }
     public DbSet<DoctorAppointment> DoctorAppointments { get; set; }

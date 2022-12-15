@@ -12,8 +12,8 @@ using Polyclinic.Data;
 namespace Polyclinic.Migrations
 {
     [DbContext(typeof(PolyclinicContext))]
-    [Migration("20221214191453_init1")]
-    partial class init1
+    [Migration("20221215143225_init2")]
+    partial class init2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -644,8 +644,14 @@ namespace Polyclinic.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("MiddleName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PoilsCompany")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("PolisEndDate")
+                        .HasColumnType("date");
 
                     b.Property<int>("PolisID")
                         .HasColumnType("int");
@@ -661,28 +667,9 @@ namespace Polyclinic.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PolisID");
-
                     b.HasIndex("PolyclinicUserID");
 
                     b.ToTable("Patients");
-                });
-
-            modelBuilder.Entity("Polyclinic.Models.Polis", b =>
-                {
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Company")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("EndDate")
-                        .HasColumnType("date");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Polises");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -930,17 +917,9 @@ namespace Polyclinic.Migrations
 
             modelBuilder.Entity("Polyclinic.Models.Patient", b =>
                 {
-                    b.HasOne("Polyclinic.Models.Polis", "Polis")
-                        .WithMany()
-                        .HasForeignKey("PolisID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Polyclinic.Areas.Identity.Data.PolyclinicUser", "PolyclinicUser")
                         .WithMany()
                         .HasForeignKey("PolyclinicUserID");
-
-                    b.Navigation("Polis");
 
                     b.Navigation("PolyclinicUser");
                 });

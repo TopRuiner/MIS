@@ -47,8 +47,19 @@
                 <span asp-validation-for="BirthDate" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label class="control-label">Номер полиса</label>
+                <label asp-for="PolisID" class="control-label"></label>
                 <input asp-for="PolisID" class="form-control" />
+                <span asp-validation-for="PolisID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PoilsCompany" class="control-label"></label>
+                <input asp-for="PoilsCompany" class="form-control" />
+                <span asp-validation-for="PoilsCompany" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PolisEndDate" class="control-label"></label>
+                <input type="date" asp-for="PolisEndDate" class="form-control" />
+                <span asp-validation-for="PolisEndDate" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="SnilsNumber" class="control-label"></label>
