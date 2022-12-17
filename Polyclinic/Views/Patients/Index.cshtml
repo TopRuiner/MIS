@@ -12,7 +12,11 @@
 </p>
 <form method="get" asp-action="Index">
     <p>
-        <input type="search" placeholder="Введите фамилию или имя пациента" value="@ViewData["GetPatientsDetails"]" name="PatientsSearch" style="width:700px;" />
+        <p>Поиск</p>
+    <p style="color:red;">@Html.ValidationMessage("error_msg")</p>
+    <input type="search" placeholder="Введите ФИО пациента (Обязательно)" value="@ViewData["PatientFIO"]" name="PatientFIO" style="width:600px;" />
+        <p>Дата рождения пациента (Необязательно)</p>
+    <input type="date" value="@ViewData["PatientBirthDate"]" name="PatientBirthDate" style="width:300px;" />
         <input type="submit" value="Search" class="btn btn-primary" />
         <a asp-action="Index">Получить список всех пациентов</a>
     </p>
@@ -37,7 +41,7 @@
             </th>
             <!--
             <th>
-                @Html.DisplayNameFor(model => model.PolyclinicUser)
+            @Html.DisplayNameFor(model => model.PolyclinicUser)
             </th>
             -->
             <th>
@@ -59,49 +63,50 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FirstName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LastName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MiddleName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ReturnBirthDateForDisplay)
-            </td>
-            <!--
-            <td>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FirstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MiddleName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ReturnBirthDateForDisplay)
+                </td>
+                <!--
+                <td>
                 @Html.DisplayFor(modelItem => item.PolyclinicUser.Id)
-            </td>
-             -->
-            <td>
-                @Html.DisplayFor(modelItem => item.PolisID)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PoilsCompany)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ReturnPolisEndDateForDisplay)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SnilsNumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.WorkPlace)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+                </td>
+                 -->
+                <td>
+                    @Html.DisplayFor(modelItem => item.PolisID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PoilsCompany)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ReturnPolisEndDateForDisplay)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SnilsNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.WorkPlace)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

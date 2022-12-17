@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Polyclinic.Data;
@@ -155,14 +151,14 @@ namespace Polyclinic.Controllers
             {
                 _context.Doctors.Remove(doctor);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool DoctorExists(int id)
         {
-          return _context.Doctors.Any(e => e.Id == id);
+            return _context.Doctors.Any(e => e.Id == id);
         }
     }
 }

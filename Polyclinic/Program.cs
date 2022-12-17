@@ -1,7 +1,6 @@
 using Microsoft.EntityFrameworkCore;
-using Polyclinic.Data;
-using Microsoft.AspNetCore.Identity;
 using Polyclinic.Areas.Identity.Data;
+using Polyclinic.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,7 +16,7 @@ builder.Services.AddDefaultIdentity<PolyclinicUser>(options => options.SignIn.Re
 
 
 //������ ��� ���������
-builder.Services.AddSingleton<IHttpContextAccessor,HttpContextAccessor>();
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
 {
@@ -38,7 +37,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseSession();
 app.UseRouting();
-app.UseAuthentication();;
+app.UseAuthentication(); ;
 
 app.UseAuthorization();
 

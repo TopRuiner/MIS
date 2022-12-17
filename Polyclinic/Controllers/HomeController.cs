@@ -4,7 +4,7 @@ using System.Diagnostics;
 
 namespace Polyclinic.Controllers
 {
-    
+
     public class HomeController : Controller
     {
         //Контекст для получения данных сессии
@@ -20,7 +20,7 @@ namespace Polyclinic.Controllers
 
         public IActionResult Index()
         {
-            
+
             return View();
         }
 

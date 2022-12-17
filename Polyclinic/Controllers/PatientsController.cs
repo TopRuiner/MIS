@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Polyclinic.Data;
+using Polyclinic.Models;
 
-namespace Polyclinic.Models
+namespace Polyclinic.Controllers
 {
     public class PatientsController : Controller
     {
@@ -24,7 +21,29 @@ namespace Polyclinic.Models
             var polyclinicContext = _context.Patients.Include(p => p.PolyclinicUser);
             return View(await polyclinicContext.ToListAsync());
         }
-
+        [HttpGet]
+        public async Task<IActionResult> Index(string patientFIO, DateTime? patientBirthDate)
+        {
+            ViewData["PatientFIO"] = patientFIO;
+            ViewData["PatientBirthDate"] = patientBirthDate;
+            var patientsQuery = from x in _context.Patients select x;
+            if (!String.IsNullOrEmpty(patientFIO))
+            {
+                string[] listPatientFIO = patientFIO.Split(' ');
+                if (listPatientFIO.Length == 3)
+                {
+                    if (patientBirthDate != null)
+                    {
+                        patientsQuery = patientsQuery.Where(x => x.LastName.Contains(listPatientFIO[0]) && x.FirstName.Contains(listPatientFIO[1]) && x.MiddleName.Contains(listPatientFIO[2]) && x.BirthDate.Equals(patientBirthDate));
+                    }
+                    else
+                    {
+                        patientsQuery = patientsQuery.Where(x => x.LastName.Contains(listPatientFIO[0]) && x.FirstName.Contains(listPatientFIO[1]) && x.MiddleName.Contains(listPatientFIO[2]));
+                    }
+                }
+            }
+            return View(await patientsQuery.AsNoTracking().ToListAsync());
+        }
         // GET: Patients/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -154,14 +173,14 @@ namespace Polyclinic.Models
             {
                 _context.Patients.Remove(patient);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool PatientExists(int id)
         {
-          return _context.Patients.Any(e => e.Id == id);
+            return _context.Patients.Any(e => e.Id == id);
         }
     }
 }

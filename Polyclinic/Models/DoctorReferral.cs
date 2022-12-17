@@ -1,13 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Reflection.Metadata.Ecma335;
 
 namespace Polyclinic.Models
 {
     public class DoctorReferral
     {
         [Key]
-        public int Id { get; set;}
+        public int Id { get; set; }
         [ForeignKey("Diagnosis")]
         public string? DiagnosisId { get; set; }
         public Diagnosis? Diagnosis { get; set; }
