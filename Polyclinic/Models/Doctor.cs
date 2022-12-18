@@ -28,5 +28,21 @@ namespace Polyclinic.Models
                 return this.BirthDate?.ToShortDateString();
             }
         }
+        [NotMapped]
+        public string ReturnFIO
+        {
+            get
+            {
+                return FirstName + " " + LastName + " " + MiddleName;
+            }
+        }
+        [NotMapped]
+        public string ReturnFIOAndSpeciality
+        {
+            get
+            {
+                return LastName + " " + FirstName + " " + MiddleName + " (" + Speciality + ")";
+            }
+        }
     }
 }

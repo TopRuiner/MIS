@@ -19,7 +19,7 @@ namespace Polyclinic.Models
         public int PolisID { get; set; }
         public string PoilsCompany { get; set; }
         [Column(TypeName = "date")]
-        public DateTime PolisEndDate { get; set; }
+        public DateTime? PolisEndDate { get; set; }
         public int SnilsNumber { get; set; }
         public string? WorkPlace { get; set; }
         public IEnumerable<Analysis>? Analyses { get; set; }
@@ -33,11 +33,20 @@ namespace Polyclinic.Models
                 return this.BirthDate?.ToShortDateString();
             }
         }
+        [NotMapped]
         public string ReturnPolisEndDateForDisplay
         {
             get
             {
-                return this.PolisEndDate.ToShortDateString();
+                return this.PolisEndDate?.ToShortDateString();
+            }
+        }
+        [NotMapped]
+        public string ReturnFIO
+        {
+            get
+            {
+                return FirstName + " " + LastName + " " + MiddleName;
             }
         }
 

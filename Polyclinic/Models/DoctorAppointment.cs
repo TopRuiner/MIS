@@ -9,7 +9,7 @@ namespace Polyclinic.Models
         public int Id { get; set; }
         [ForeignKey("Patient")]
         public int PatientId { get; set; }
-        public Patient Patient { get; set; }
+        public Patient? Patient { get; set; }
         public string? CabinetId { get; set; }
         public DateTime? DateTime { get; set; }
         public string? Status { get; set; }

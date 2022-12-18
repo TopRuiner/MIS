@@ -46,12 +46,19 @@ namespace Polyclinic.Controllers
         // GET: DoctorAppointments/Create
         public IActionResult Create()
         {
-            ViewData["DoctorId"] = new SelectList(_context.Doctors, "Id", "Id");
-            ViewData["PatientId"] = new SelectList(_context.Patients, "Id", "Id");
+            ViewBag.Doctors = new SelectList(_context.Doctors, "Id", "ReturnFIOAndSpeciality");
+            //ViewData["DoctorId"] = new SelectList(_context.Doctors, "Id", "Id");
+            //ViewData["PatientId"] = new SelectList(_context.Patients, "Id", "LastName");
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             int? patientId = _context.Patients.Where(p => p.PolyclinicUserID == userId).FirstOrDefault().Id;
-            //ViewData["PatientId"] = patientId;
-
+            ViewData["PatientId"] = patientId;
+            /*
+            List<Patient> patients = new List<Patient>
+            {
+                _context.Patients.Find(patientId)
+            };
+            ViewData["PatientId"] = new SelectList(patients, "Id", "Id");
+            */
             return View();
         }
 
@@ -64,16 +71,13 @@ namespace Polyclinic.Controllers
         {
             if (ModelState.IsValid)
             {
+                doctorAppointment.Status = "Ожидает подтверждения";
                 _context.Add(doctorAppointment);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-
             ViewData["DoctorId"] = new SelectList(_context.Doctors, "Id", "Id", doctorAppointment.DoctorId);
-            //ViewData["PatientId"] = new SelectList(_context.Patients, "Id", "Id", doctorAppointment.PatientId);
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            int? patientId = _context.Patients.Where(p => p.PolyclinicUserID == userId).FirstOrDefault().Id;
-            //ViewData["PatientId"] = patientId;
+            ViewData["PatientId"] = new SelectList(_context.Patients, "Id", "Id", doctorAppointment.PatientId);
             string messages = string.Join("; ", ModelState.Values
                             .SelectMany(x => x.Errors)
                             .Select(x => x.ErrorMessage));
