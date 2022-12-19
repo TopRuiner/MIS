@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Polyclinic.Areas.Identity.Data;
+using Polyclinic.Data;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.Text.Encodings.Web;
@@ -24,12 +25,20 @@ namespace Polyclinic.Areas.Identity.Pages.Account
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
 
+        private readonly PolyclinicContext _context;
+        /*
+        public RegisterModel(PolyclinicContext context)
+        {
+            _context = context;
+        }
+        */
         public RegisterModel(
             UserManager<PolyclinicUser> userManager,
             IUserStore<PolyclinicUser> userStore,
             SignInManager<PolyclinicUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            PolyclinicContext context)
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -37,6 +46,7 @@ namespace Polyclinic.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _context = context;
         }
 
         /// <summary>
@@ -114,6 +124,12 @@ namespace Polyclinic.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
+
+                    //Автоматическое присвоение роли только что зарегитсрировавшегося пользователя
+                    var userRole = new IdentityUserRole<string> { RoleId = "6", UserId = user.Id };
+                    _context.UserRoles.Add(userRole);
+                    _context.SaveChangesAsync();
+                    //Конец присвоения
 
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);

@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Polyclinic.Areas.Identity.Data;
 using Polyclinic.Data;
@@ -12,8 +14,20 @@ builder.Services.AddDbContext<PolyclinicContext>(options =>
 });
 
 builder.Services.AddDefaultIdentity<PolyclinicUser>(options => options.SignIn.RequireConfirmedAccount = false)
+    .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<PolyclinicContext>();
 
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("RequireDoctor", new AuthorizationPolicyBuilder()
+        .RequireAuthenticatedUser()
+        .RequireRole("role", "Doctor")
+        .Build());
+    options.AddPolicy("RequireCanRegisterAsPatient", new AuthorizationPolicyBuilder()
+        .RequireAuthenticatedUser()
+        .RequireRole("role", "CanRegisterAsPatient")
+        .Build());
+});
 
 //������ ��� ���������
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
@@ -46,4 +60,13 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.MapRazorPages();
+
+
+/*
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("RequireDoctor", policy => policy.RequireRole("Doctor"));
+});
+*/
 app.Run();
+

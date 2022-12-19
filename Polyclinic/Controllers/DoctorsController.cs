@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Polyclinic.Areas.Identity.Data;
 using Polyclinic.Data;
 using Polyclinic.Models;
 
@@ -9,13 +12,16 @@ namespace Polyclinic.Controllers
     public class DoctorsController : Controller
     {
         private readonly PolyclinicContext _context;
+        private readonly SignInManager<PolyclinicUser> _signInManager;
 
-        public DoctorsController(PolyclinicContext context)
+        public DoctorsController(SignInManager<PolyclinicUser> signInManager, PolyclinicContext context)
         {
             _context = context;
+            _signInManager = signInManager;
         }
 
         // GET: Doctors
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index()
         {
             var polyclinicContext = _context.Doctors.Include(d => d.PolyclinicUser);
@@ -23,6 +29,7 @@ namespace Polyclinic.Controllers
         }
 
         // GET: Doctors/Details/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Doctors == null)
@@ -42,6 +49,7 @@ namespace Polyclinic.Controllers
         }
 
         // GET: Doctors/Create
+        [Authorize(Roles = "CanRegisterAsDoctor")]
         public IActionResult Create()
         {
             ViewData["PolyclinicUserID"] = new SelectList(_context.Users, "Id", "Id");
@@ -53,12 +61,18 @@ namespace Polyclinic.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "CanRegisterAsDoctor")]
         public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,MiddleName,BirthDate,PolyclinicUserID,Speciality,Category,Degree")] Doctor doctor)
         {
             if (ModelState.IsValid)
             {
                 _context.Add(doctor);
+                var userRoleBefore = new IdentityUserRole<string> { RoleId = "2", UserId = doctor.PolyclinicUserID };
+                var userRoleAfter = new IdentityUserRole<string> { RoleId = "1", UserId = doctor.PolyclinicUserID };
+                _context.UserRoles.Remove(userRoleBefore);
+                _context.UserRoles.Add(userRoleAfter);
                 await _context.SaveChangesAsync();
+                await _signInManager.SignOutAsync();
                 return RedirectToAction(nameof(Index));
             }
             ViewData["PolyclinicUserID"] = new SelectList(_context.Users, "Id", "Id", doctor.PolyclinicUserID);
@@ -119,6 +133,7 @@ namespace Polyclinic.Controllers
         }
 
         // GET: Doctors/Delete/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Doctors == null)
@@ -140,6 +155,7 @@ namespace Polyclinic.Controllers
         // POST: Doctors/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.Doctors == null)

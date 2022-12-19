@@ -26,7 +26,7 @@ namespace Polyclinic.Models
         public IEnumerable<Examination>? Examinations { get; set; }
         public IEnumerable<Inspection>? Inspections { get; set; }
         [NotMapped]
-        public string ReturnBirthDateForDisplay
+        public string? ReturnBirthDateForDisplay
         {
             get
             {
@@ -34,7 +34,7 @@ namespace Polyclinic.Models
             }
         }
         [NotMapped]
-        public string ReturnPolisEndDateForDisplay
+        public string? ReturnPolisEndDateForDisplay
         {
             get
             {
@@ -42,7 +42,7 @@ namespace Polyclinic.Models
             }
         }
         [NotMapped]
-        public string ReturnFIO
+        public string? ReturnFIO
         {
             get
             {
@@ -50,7 +50,7 @@ namespace Polyclinic.Models
             }
         }
         [NotMapped]
-        public string ReturnFIOAndBirthDate
+        public string? ReturnFIOAndBirthDate
         {
             get
             {

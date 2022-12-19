@@ -5,10 +5,11 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Create</h1>
+<h1>Регистрация как доктор</h1>
 
-<h4>Doctor</h4>
+<h4>Доктор</h4>
 <hr />
+<p style="color:red;">ВАМ ПРИДЕТСЯ ЗАНОВО ЗАЙТИ В АККАУНТ!</p>
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
@@ -58,10 +59,11 @@
         </form>
     </div>
 </div>
-
+<!--
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
+-->
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Polyclinic.Areas.Identity.Data;
 using Polyclinic.Data;
 using Polyclinic.Models;
 
@@ -9,19 +12,23 @@ namespace Polyclinic.Controllers
     public class ReceptionistsController : Controller
     {
         private readonly PolyclinicContext _context;
+        private readonly SignInManager<PolyclinicUser> _signInManager;
 
-        public ReceptionistsController(PolyclinicContext context)
+        public ReceptionistsController(SignInManager<PolyclinicUser> signInManager, PolyclinicContext context)
         {
             _context = context;
+            _signInManager = signInManager;
         }
 
         // GET: Receptionists
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index()
         {
             var polyclinicContext = _context.Receptionist.Include(r => r.PolyclinicUser);
             return View(await polyclinicContext.ToListAsync());
         }
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index(string receptionistFIO, DateTime? receptionistBirthDate)
         {
             ViewData["ReceptionistFIO"] = receptionistFIO;
@@ -46,6 +53,7 @@ namespace Polyclinic.Controllers
         }
 
         // GET: Receptionists/Details/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Receptionist == null)
@@ -65,6 +73,7 @@ namespace Polyclinic.Controllers
         }
 
         // GET: Receptionists/Create
+        [Authorize(Roles = "CanRegisterAsReceptionist")]
         public IActionResult Create()
         {
             ViewData["PolyclinicUserID"] = new SelectList(_context.Users, "Id", "Id");
@@ -76,19 +85,28 @@ namespace Polyclinic.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "CanRegisterAsReceptionist")]
+
         public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,MiddleName,BirthDate,PolyclinicUserID")] Receptionist receptionist)
         {
             if (ModelState.IsValid)
             {
                 _context.Add(receptionist);
+                var userRoleBefore = new IdentityUserRole<string> { RoleId = "3", UserId = receptionist.PolyclinicUserID };
+                var userRoleAfter = new IdentityUserRole<string> { RoleId = "5", UserId = receptionist.PolyclinicUserID };
+                _context.UserRoles.Remove(userRoleBefore);
+                _context.UserRoles.Add(userRoleAfter);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                await _signInManager.SignOutAsync();
+
+                return Redirect("/");
             }
             ViewData["PolyclinicUserID"] = new SelectList(_context.Users, "Id", "Id", receptionist.PolyclinicUserID);
             return View(receptionist);
         }
 
         // GET: Receptionists/Edit/5
+
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Receptionist == null)
@@ -110,6 +128,8 @@ namespace Polyclinic.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,LastName,MiddleName,BirthDate,PolyclinicUserID")] Receptionist receptionist)
         {
             if (id != receptionist.Id)
@@ -142,7 +162,10 @@ namespace Polyclinic.Controllers
         }
 
         // GET: Receptionists/Delete/5
+        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> Delete(int? id)
+
         {
             if (id == null || _context.Receptionist == null)
             {
@@ -163,6 +186,7 @@ namespace Polyclinic.Controllers
         // POST: Receptionists/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.Receptionist == null)

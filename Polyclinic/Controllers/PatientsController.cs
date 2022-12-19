@@ -1,27 +1,36 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Polyclinic.Areas.Identity.Data;
 using Polyclinic.Data;
 using Polyclinic.Models;
+using System.Data;
 
 namespace Polyclinic.Controllers
 {
     public class PatientsController : Controller
     {
         private readonly PolyclinicContext _context;
+        private readonly SignInManager<PolyclinicUser> _signInManager;
 
-        public PatientsController(PolyclinicContext context)
+        public PatientsController(SignInManager<PolyclinicUser> signInManager, PolyclinicContext context)
         {
             _context = context;
+            _signInManager = signInManager;
         }
 
+
         // GET: Patients
+        [Authorize(Roles = "Doctor")]
         public async Task<IActionResult> Index()
         {
             var polyclinicContext = _context.Patients.Include(p => p.PolyclinicUser);
             return View(await polyclinicContext.ToListAsync());
         }
         [HttpGet]
+        [Authorize(Roles = "Doctor")]
         public async Task<IActionResult> Index(string patientFIO, DateTime? patientBirthDate)
         {
             ViewData["PatientFIO"] = patientFIO;
@@ -44,7 +53,9 @@ namespace Polyclinic.Controllers
             }
             return View(await patientsQuery.AsNoTracking().ToListAsync());
         }
+
         // GET: Patients/Details/5
+        [Authorize(Roles = "Doctor")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Patients == null)
@@ -64,6 +75,9 @@ namespace Polyclinic.Controllers
         }
 
         // GET: Patients/Create
+
+        //[Authorize(Policy = "RequireCanRegisterAsPatient")]
+        [Authorize(Roles = "CanRegisterAsPatient")]
         public IActionResult Create()
         {
             ViewData["PolyclinicUserID"] = new SelectList(_context.Users, "Id", "Id");
@@ -75,14 +89,28 @@ namespace Polyclinic.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        //[Authorize(Policy = "RequireCanRegisterAsPatient")]
+        [Authorize(Roles = "CanRegisterAsPatient")]
         public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,MiddleName,BirthDate,PolyclinicUserID,PolisID,PoilsCompany,PolisEndDate,SnilsNumber,WorkPlace")] Patient patient)
         {
             if (ModelState.IsValid)
             {
                 _context.Add(patient);
+                var userRoleBefore = new IdentityUserRole<string> { RoleId = "6", UserId = patient.PolyclinicUserID };
+                var userRoleAfter = new IdentityUserRole<string> { RoleId = "7", UserId = patient.PolyclinicUserID };
+                _context.UserRoles.Remove(userRoleBefore);
+                _context.UserRoles.Add(userRoleAfter);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+
+                await _signInManager.SignOutAsync();
+                return Redirect("/");
+                //return RedirectToAction(nameof(Index));
             }
+            string messages = string.Join("; ", ModelState.Values
+                            .SelectMany(x => x.Errors)
+                            .Select(x => x.ErrorMessage));
+            ModelState.AddModelError("error_msg", messages);
+
             ViewData["PolyclinicUserID"] = new SelectList(_context.Users, "Id", "Id", patient.PolyclinicUserID);
             return View(patient);
         }
