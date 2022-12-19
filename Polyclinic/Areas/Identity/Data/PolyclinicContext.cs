@@ -34,6 +34,8 @@ public class PolyclinicContext : IdentityDbContext<PolyclinicUser>
         // Add your customizations after calling base.OnModelCreating(builder);
         builder.ApplyConfiguration(new ApplicationUserEntityConfiguration());
     }
+
+    public DbSet<Polyclinic.Models.Receptionist> Receptionist { get; set; }
 }
 
 internal class ApplicationUserEntityConfiguration : IEntityTypeConfiguration<PolyclinicUser>

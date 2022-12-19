@@ -1,10 +1,11 @@
-﻿using Polyclinic.Areas.Identity.Data;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Polyclinic.Areas.Identity.Data;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Polyclinic.Models
 {
-    public class FunctionalDiagnosticsDoctor
+    public class Receptionist
     {
         [Key]
         public int Id { get; set; }
@@ -17,7 +18,6 @@ namespace Polyclinic.Models
         [ForeignKey("PolyclinicUser")]
         public string? PolyclinicUserID { get; set; }
         public virtual PolyclinicUser? PolyclinicUser { get; set; }
-        public IEnumerable<Examination>? Examinations { get; set; }
         [NotMapped]
         public string ReturnDateForDisplay
         {
@@ -26,5 +26,14 @@ namespace Polyclinic.Models
                 return this.BirthDate?.ToShortDateString();
             }
         }
+        [NotMapped]
+        public string ReturnFIO
+        {
+            get
+            {
+                return FirstName + " " + LastName + " " + MiddleName;
+            }
+        }
+
     }
 }

@@ -1,0 +1,75 @@
+﻿@model IEnumerable<Polyclinic.Models.DoctorAppointment>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<form method="get" asp-action="Index">
+    <p>
+        <p>Поиск</p>
+    <p style="color:red;">@Html.ValidationMessage("error_msg")</p>
+    <!--
+    <input type="search" placeholder="Введите ФИО пациента (Обязательно)" value="1" name="option" style="width:100px;" hidden />
+    -->
+    <input type="submit" value="Ожидает подтверждения" name="option" class="btn btn-primary"></input>
+    <input type="submit" value="Подтверждена" name="option" class="btn btn-primary" />
+    <input type="submit" value="Отменена регистраутрой" name="option" class="btn btn-primary" />
+    <input type="submit" value="Отменена пациентом" name="option" class="btn btn-primary" />
+    <p><a asp-action="Index">Получить список всех пациентов</a></p>
+    </p>
+</form>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Patient)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CabinetId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Doctor)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Patient.ReturnFIO)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CabinetId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>
+                    @Html.DisplayFor(modelItem => item.Doctor.ReturnFIO)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> |
+                <a asp-action="Decline" asp-route-id="@item.Id">Decline</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

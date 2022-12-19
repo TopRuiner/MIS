@@ -14,7 +14,7 @@ namespace Polyclinic.Models
         public string Description { get; set; }
         [ForeignKey("Assistant")]
         public int AssistantId { get; set; }
-        public Assistant Assistant { get; set; }
+        public virtual Assistant? Assistant { get; set; }
 
     }
 }

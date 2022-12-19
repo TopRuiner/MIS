@@ -16,7 +16,7 @@ namespace Polyclinic.Models
 
         [ForeignKey("PolyclinicUser")]
         public string? PolyclinicUserID { get; set; }
-        public PolyclinicUser? PolyclinicUser { get; set; }
+        public virtual PolyclinicUser? PolyclinicUser { get; set; }
         public string Speciality { get; set; }
         public string? Category { get; set; }
         public string? Degree { get; set; }

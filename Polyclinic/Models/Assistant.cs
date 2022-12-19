@@ -16,7 +16,7 @@ namespace Polyclinic.Models
 
         [ForeignKey("PolyclinicUser")]
         public string? PolyclinicUserID { get; set; }
-        public PolyclinicUser? PolyclinicUser { get; set; }
+        public virtual PolyclinicUser? PolyclinicUser { get; set; }
         public IEnumerable<Analysis>? Analyses { get; set; }
         [NotMapped]
         public string ReturnDateForDisplay

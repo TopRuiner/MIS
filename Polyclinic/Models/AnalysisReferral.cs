@@ -12,14 +12,14 @@ namespace Polyclinic.Models
         public Diagnosis? Diagnosis { get; set; }
         [ForeignKey("Doctor")]
         public int DoctorId { get; set; }
-        public Doctor Doctor { get; set; }
+        public virtual Doctor? Doctor { get; set; }
         [ForeignKey("Patient")]
         public int? PatientId { get; set; }
-        public Patient? Patient { get; set; }
+        public virtual Patient? Patient { get; set; }
         public string? Type { get; set; }
         [ForeignKey("Assistant")]
         public int? AssistantId { get; set; }
-        public Assistant? Assistant { get; set; }
+        public virtual Assistant? Assistant { get; set; }
         public string? СabinetNum { get; set; }
         public DateTime? DateTime { get; set; }
     }

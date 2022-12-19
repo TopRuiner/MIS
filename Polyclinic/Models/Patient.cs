@@ -15,7 +15,7 @@ namespace Polyclinic.Models
         public DateTime? BirthDate { get; set; }
         [ForeignKey("PolyclinicUser")]
         public string? PolyclinicUserID { get; set; }
-        public PolyclinicUser? PolyclinicUser { get; set; }
+        public virtual PolyclinicUser? PolyclinicUser { get; set; }
         public int PolisID { get; set; }
         public string PoilsCompany { get; set; }
         [Column(TypeName = "date")]
@@ -47,6 +47,14 @@ namespace Polyclinic.Models
             get
             {
                 return FirstName + " " + LastName + " " + MiddleName;
+            }
+        }
+        [NotMapped]
+        public string ReturnFIOAndBirthDate
+        {
+            get
+            {
+                return FirstName + " " + LastName + " " + MiddleName + " " + this.BirthDate?.ToShortDateString();
             }
         }
 
