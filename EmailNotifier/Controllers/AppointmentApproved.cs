@@ -1,7 +1,5 @@
-﻿using MailKit.Net.Smtp;
-using MailKit.Security;
+﻿using EmailNotifier.PrivateSettings;
 using Microsoft.AspNetCore.Mvc;
-using MimeKit;
 
 namespace EmailNotifier.Controllers
 {
@@ -11,22 +9,23 @@ namespace EmailNotifier.Controllers
     {
         [HttpPost]
         [Route("SendEmailNotification")]
-        public string Send([FromQuery] string email, [FromQuery] string message)
+        public string Send([FromQuery] string email, [FromQuery] string subject, [FromQuery] string message)
         {
             try
             {
+                /*
                 var initialEmail = new MimeMessage();
-                initialEmail.From.Add(MailboxAddress.Parse("krylov.em2002@gmail.com"));
+                initialEmail.From.Add(MailboxAddress.Parse(MailSettings.Email));
                 initialEmail.To.Add(MailboxAddress.Parse(email));
                 initialEmail.Subject = "Подтверждение заявки на прием ко врачу";
                 initialEmail.Body = new TextPart(MimeKit.Text.TextFormat.Plain) { Text = message };
-                using (var smtp = new SmtpClient())
-                {
-                    smtp.Connect("smtp.gmail.com", 587, SecureSocketOptions.StartTls);
-                    smtp.Authenticate("krylov.em2002@gmail.com", "rfxbhiedmrmdvvdr");
-                    smtp.Send(initialEmail);
-                    smtp.Disconnect(true);
-                }
+                */
+
+                var smtpClient = new System.Net.Mail.SmtpClient("smtp.mail.ru", 587);
+                smtpClient.Credentials = new System.Net.NetworkCredential(MailSettings.Email, MailSettings.Password);
+                smtpClient.EnableSsl = true;
+                smtpClient.Send(new System.Net.Mail.MailMessage(MailSettings.Email, email, subject, message));
+                smtpClient.Dispose();
 
                 return "Оповещение отправлено";
             }

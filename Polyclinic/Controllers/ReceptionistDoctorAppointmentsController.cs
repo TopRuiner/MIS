@@ -139,8 +139,9 @@ namespace Polyclinic.Controllers
                     var doctor = _context.Doctors.Find(doctorAppointment.DoctorId);
                     var patientUser = _context.Users.Find(patient.PolyclinicUserID);
                     string email = patientUser.Email;
+                    string subject = "Подтверждение заявки на прием ко врачу";
                     string message = "Ваша заявка на прием ко врачу подтверждена регистратурой\nДанные направления:" + "\nКабинет:" + doctorAppointment.CabinetId + "\nВремя:" + doctorAppointment.DateTime + "\nДоктор:" + doctor.ReturnFIOAndSpeciality;
-                    string url = string.Format("https://localhost:7262/Approved/SendEmailNotification?email={0}&message={1}", email, message);
+                    string url = string.Format("https://localhost:7262/Approved/SendEmailNotification?email={0}&subject={1}&message={2}", email, subject, message);
                     HttpResponseMessage response = client.GetAsync(url).Result;
                     if (response.IsSuccessStatusCode)
                     {
