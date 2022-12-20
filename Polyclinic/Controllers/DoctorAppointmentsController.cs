@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Polyclinic.Areas.Identity.Data;
 using Polyclinic.Data;
 using Polyclinic.Models;
 using System.Security.Claims;
@@ -10,20 +13,41 @@ namespace Polyclinic.Controllers
     public class DoctorAppointmentsController : Controller
     {
         private readonly PolyclinicContext _context;
+        private readonly UserManager<PolyclinicUser> _userManager;
 
-        public DoctorAppointmentsController(PolyclinicContext context)
+        public DoctorAppointmentsController(UserManager<PolyclinicUser> userManager, PolyclinicContext context)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: DoctorAppointments
+        [Authorize(Roles = "Patient")]
         public async Task<IActionResult> Index()
         {
-            var polyclinicContext = _context.DoctorAppointments.Include(d => d.Doctor).Include(d => d.Patient);
+            var user = _context.Patients.Where(u => u.PolyclinicUserID == _userManager.GetUserId(HttpContext.User)).FirstOrDefault();
+            var polyclinicContext = _context.DoctorAppointments.Include(d => d.Doctor).Include(d => d.Patient).Where(p => p.PatientId == user.Id);
+
             return View(await polyclinicContext.ToListAsync());
+        }
+        [HttpGet]
+        [Authorize(Roles = "Patient")]
+
+        public async Task<IActionResult> Index(string option)
+        {
+            ViewData["Case"] = option;
+            var user = _context.Patients.Where(u => u.PolyclinicUserID == _userManager.GetUserId(HttpContext.User)).FirstOrDefault();
+            var doctorReferralQuery = from x in _context.DoctorAppointments.Include(d => d.Doctor).Include(d => d.Patient).Where(p => p.PatientId == user.Id) select x;
+            if (!String.IsNullOrEmpty(option))
+            {
+                doctorReferralQuery = doctorReferralQuery.Where(x => x.Status.Contains(option));
+            }
+            return View(await doctorReferralQuery.AsNoTracking().ToListAsync());
         }
 
         // GET: DoctorAppointments/Details/5
+        [Authorize(Roles = "Receptionist")]
+
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.DoctorAppointments == null)
@@ -44,6 +68,8 @@ namespace Polyclinic.Controllers
         }
 
         // GET: DoctorAppointments/Create
+        [Authorize(Roles = "Patient")]
+
         public IActionResult Create()
         {
             ViewBag.Doctors = new SelectList(_context.Doctors, "Id", "ReturnFIOAndSpeciality");
@@ -67,6 +93,8 @@ namespace Polyclinic.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Patient")]
+
         public async Task<IActionResult> Create([Bind("Id,PatientId,CabinetId,DateTime,Status,DoctorId")] DoctorAppointment doctorAppointment)
         {
             if (ModelState.IsValid)
@@ -86,6 +114,8 @@ namespace Polyclinic.Controllers
         }
 
         // GET: DoctorAppointments/Edit/5
+        [Authorize(Roles = "Receptionist")]
+
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.DoctorAppointments == null)
@@ -108,6 +138,8 @@ namespace Polyclinic.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Receptionist")]
+
         public async Task<IActionResult> Edit(int id, [Bind("Id,PatientId,CabinetId,DateTime,Status,DoctorId")] DoctorAppointment doctorAppointment)
         {
             if (id != doctorAppointment.Id)
@@ -141,6 +173,8 @@ namespace Polyclinic.Controllers
         }
 
         // GET: DoctorAppointments/Delete/5
+        [Authorize(Roles = "Receptionist")]
+
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.DoctorAppointments == null)
@@ -161,6 +195,8 @@ namespace Polyclinic.Controllers
         }
 
         // POST: DoctorAppointments/Delete/5
+        [Authorize(Roles = "Receptionist")]
+
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

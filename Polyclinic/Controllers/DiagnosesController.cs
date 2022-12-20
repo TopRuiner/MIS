@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Polyclinic.Data;
 using Polyclinic.Models;
+using System.Data;
 
 namespace Polyclinic.Controllers
 {
@@ -15,6 +17,8 @@ namespace Polyclinic.Controllers
         }
 
         // GET: Diagnoses
+        [Authorize(Roles = "Admin,Doctor")]
+
         public async Task<IActionResult> Index()
         {
             return View(await _context.Diagnoses.ToListAsync());
@@ -32,6 +36,8 @@ namespace Polyclinic.Controllers
         }
 
         // GET: Diagnoses/Details/5
+        [Authorize(Roles = "Admin,Doctor")]
+
         public async Task<IActionResult> Details(string id)
         {
             if (id == null || _context.Diagnoses == null)
@@ -50,6 +56,8 @@ namespace Polyclinic.Controllers
         }
 
         // GET: Diagnoses/Create
+        [Authorize(Roles = "Admin")]
+
         public IActionResult Create()
         {
             return View();
@@ -72,6 +80,8 @@ namespace Polyclinic.Controllers
         }
 
         // GET: Diagnoses/Edit/5
+        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> Edit(string id)
         {
             if (id == null || _context.Diagnoses == null)
@@ -92,6 +102,8 @@ namespace Polyclinic.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> Edit(string id, [Bind("Id,Description")] Diagnosis diagnosis)
         {
             if (id != diagnosis.Id)
@@ -123,6 +135,8 @@ namespace Polyclinic.Controllers
         }
 
         // GET: Diagnoses/Delete/5
+        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> Delete(string id)
         {
             if (id == null || _context.Diagnoses == null)
@@ -143,6 +157,8 @@ namespace Polyclinic.Controllers
         // POST: Diagnoses/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
             if (_context.Diagnoses == null)

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Polyclinic.Data;
@@ -16,6 +17,8 @@ namespace Polyclinic.Controllers
         }
 
         // GET: Assistants
+        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> Index()
         {
             var polyclinicContext = _context.Assistants.Include(a => a.PolyclinicUser);
@@ -23,6 +26,8 @@ namespace Polyclinic.Controllers
         }
 
         // GET: Assistants/Details/5
+        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Assistants == null)
@@ -42,6 +47,8 @@ namespace Polyclinic.Controllers
         }
 
         // GET: Assistants/Create
+        [Authorize(Roles = "Admin")]
+
         public IActionResult Create()
         {
             ViewData["PolyclinicUserID"] = new SelectList(_context.Users, "Id", "Id");
@@ -53,6 +60,8 @@ namespace Polyclinic.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,MiddleName,BirthDate,PolyclinicUserID")] Assistant assistant)
         {
             if (ModelState.IsValid)
@@ -66,7 +75,10 @@ namespace Polyclinic.Controllers
         }
 
         // GET: Assistants/Edit/5
+        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> Edit(int? id)
+
         {
             if (id == null || _context.Assistants == null)
             {
@@ -87,6 +99,8 @@ namespace Polyclinic.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,LastName,MiddleName,BirthDate,PolyclinicUserID")] Assistant assistant)
         {
             if (id != assistant.Id)
@@ -119,6 +133,8 @@ namespace Polyclinic.Controllers
         }
 
         // GET: Assistants/Delete/5
+        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Assistants == null)
@@ -140,6 +156,8 @@ namespace Polyclinic.Controllers
         // POST: Assistants/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.Assistants == null)

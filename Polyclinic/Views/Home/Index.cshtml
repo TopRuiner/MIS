@@ -2,7 +2,55 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+
+<div class="px-4 py-5 my-5 text-center">
+    <h1 class="display-5 fw-bold">Сисиема МИС Владимирской Областной Поликлиники</h1>
+    <div class="col-lg-6 mx-auto">
+        @if (!this.User.Identity.IsAuthenticated)
+        {
+            <p class="lead mb-4">Для работы в системе необходимо зарегистрироваться</p>
+            <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                <a href="/Identity/Account/Register" class="btn btn-primary btn-lg px-4 gap-3">Зарегистрироваться</a>
+                <a href="/Identity/Account/Login" class="btn btn-primary btn-lg px-4 gap-3">Войти</a>
+            </div>
+        }
+        
+        @if (this.User.IsInRole("CanRegisterAsDoctor"))
+        {
+            <p class="lead mb-4">Для работы в системе как доктор необходимо подтвердить свои данные</p>
+            <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                <a href="/Doctors/Create" class="btn btn-primary btn-lg px-4 gap-3">Подтвердить данные</a>
+            </div>
+        }
+        @if (this.User.IsInRole("CanRegisterAsReceptionist"))
+        {
+             <p class="lead mb-4">Для работы в системе как работник регистратуры необходимо подтвердить свои данные</p>
+             <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                 <a href="/Receptionists/Create" class="btn btn-primary btn-lg px-4 gap-3">Подтвердить данные</a>
+             </div>
+        }
+        @if (this.User.IsInRole("Patient"))
+        {
+             <p class="lead mb-4">Доступные Вам функции представлены ниже</p>
+             <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                <a href="/DoctorAppointments/Create" class="btn btn-primary btn-lg px-4 gap-3">Подать заявление на прием у врача</a>
+                <a href="/DoctorAppointments" class="btn btn-primary btn-lg px-4 gap-3">Посмотреть список всех заявлений</a>
+             </div>
+        }
+        @if (this.User.IsInRole("Doctor"))
+        {
+             <p class="lead mb-4">Доступные Вам функции представлены ниже</p>
+             <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                <a href="/Patients" class="btn btn-primary btn-lg px-4 gap-3">Список пациентов</a>
+                <a href="/DoctorAppointments" class="btn btn-primary btn-lg px-4 gap-3">Посмотреть список всех заявлений</a>
+             </div>
+        }
+        @if (this.User.IsInRole("CanRegisterAsPatient"))
+        {
+            <p class="lead mb-4">Для работы в системе как пациент необходимо подтвердить свои данные</p>
+            <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                <a href="/Patients/Create" class="btn btn-primary btn-lg px-4 gap-3">Подтвердить данные</a>
+            </div>
+        }
+    </div>
 </div>

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Polyclinic.Data;
@@ -15,14 +16,17 @@ namespace Polyclinic.Controllers
             _context = context;
         }
 
-        // GET: DoctorAppointments
+        // GET: ReceptionistDoctorAppointments
+        [Authorize(Roles = "Receptionist")]
         public async Task<IActionResult> Index()
         {
             var polyclinicContext = _context.DoctorAppointments.Include(d => d.Doctor).Include(d => d.Patient);
             return View(await polyclinicContext.ToListAsync());
         }
 
-        // GET: DoctorAppointments/Details/5
+        // GET: ReceptionistDoctorAppointments/Details/5
+        [Authorize(Roles = "Receptionist")]
+
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.DoctorAppointments == null)
@@ -41,7 +45,9 @@ namespace Polyclinic.Controllers
 
             return View(doctorAppointment);
         }
-        // POST: DoctorAppointments/Confirm/5
+        // POST: ReceptionistDoctorAppointments/Confirm/5
+        [Authorize(Roles = "Receptionist")]
+
 
         public async Task<IActionResult> Decline(int? id)
         {
@@ -61,7 +67,9 @@ namespace Polyclinic.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // GET: DoctorAppointments/Create
+        // GET: ReceptionistDoctorAppointments/Create
+        [Authorize(Roles = "Receptionist")]
+
         public IActionResult Create()
         {
             ViewBag.Doctors = new SelectList(_context.Doctors, "Id", "ReturnFIOAndSpeciality");
@@ -72,11 +80,13 @@ namespace Polyclinic.Controllers
             return View();
         }
 
-        // POST: DoctorAppointments/Create
+        // POST: ReceptionistDoctorAppointments/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Receptionist")]
+
         public async Task<IActionResult> Create([Bind("Id,PatientId,CabinetId,DateTime,Status,DoctorId")] DoctorAppointment doctorAppointment)
         {
             if (ModelState.IsValid)
@@ -95,7 +105,9 @@ namespace Polyclinic.Controllers
             return View(doctorAppointment);
         }
 
-        // GET: DoctorAppointments/Edit/5
+        // GET: ReceptionistDoctorAppointments/Edit/5
+        [Authorize(Roles = "Receptionist")]
+
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.DoctorAppointments == null)
@@ -116,11 +128,13 @@ namespace Polyclinic.Controllers
             return View(doctorAppointment);
         }
 
-        // POST: DoctorAppointments/Edit/5
+        // POST: ReceptionistDoctorAppointments/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Receptionist")]
+
         public async Task<IActionResult> Edit(int id, [Bind("Id,PatientId,CabinetId,DateTime,Status,DoctorId")] DoctorAppointment doctorAppointment)
         {
             if (id != doctorAppointment.Id)
@@ -170,7 +184,9 @@ namespace Polyclinic.Controllers
             return View(doctorAppointment);
         }
 
-        // GET: DoctorAppointments/Delete/5
+        // GET: ReceptionistDoctorAppointments/Delete/5
+        [Authorize(Roles = "Receptionist")]
+
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.DoctorAppointments == null)
@@ -190,7 +206,9 @@ namespace Polyclinic.Controllers
             return View(doctorAppointment);
         }
 
-        // POST: DoctorAppointments/Delete/5
+        // POST: ReceptionistDoctorAppointments/Delete/5
+        [Authorize(Roles = "Receptionist")]
+
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -209,31 +227,33 @@ namespace Polyclinic.Controllers
             return RedirectToAction(nameof(Index));
         }
         [HttpGet]
-        public async Task<IActionResult> Index(string option)
+        [Authorize(Roles = "Receptionist")]
+
+        public async Task<IActionResult> Index(string? option, string? patientFIO, DateTime? patientBirthDate)
         {
             ViewData["Case"] = option;
+            ViewData["PatientFIO"] = patientFIO;
+            ViewData["PatientBirthDate"] = patientBirthDate;
             var doctorReferralQuery = from x in _context.DoctorAppointments.Include(d => d.Doctor).Include(d => d.Patient) select x;
+            if (!String.IsNullOrEmpty(patientFIO))
+            {
+                string[] listPatientFIO = patientFIO.Split(' ');
+                if (listPatientFIO.Length == 3)
+                {
+                    if (patientBirthDate != null)
+                    {
+                        doctorReferralQuery = doctorReferralQuery.Where(x => x.Patient.LastName.Contains(listPatientFIO[0]) && x.Patient.FirstName.Contains(listPatientFIO[1]) && x.Patient.MiddleName.Contains(listPatientFIO[2]) && x.Patient.BirthDate.Equals(patientBirthDate));
+                    }
+                    else
+                    {
+                        doctorReferralQuery = doctorReferralQuery.Where(x => x.Patient.LastName.Contains(listPatientFIO[0]) && x.Patient.FirstName.Contains(listPatientFIO[1]) && x.Patient.MiddleName.Contains(listPatientFIO[2]));
+                    }
+                }
+            }
             if (!String.IsNullOrEmpty(option))
             {
                 doctorReferralQuery = doctorReferralQuery.Where(x => x.Status.Contains(option));
             }
-            /*
-            switch (option)
-            {
-                case "1":
-                    doctorReferralQuery = doctorReferralQuery.Where(x => x.Status.Contains("Ожидает подтверждения"));
-                    break;
-                case "2":
-                    doctorReferralQuery = doctorReferralQuery.Where(x => x.Status.Contains("Подтверждена"));
-                    break;
-                case "3":
-                    doctorReferralQuery = doctorReferralQuery.Where(x => x.Status.Contains("Отменена регистраутрой"));
-                    break;
-                case "4":
-                    doctorReferralQuery = doctorReferralQuery.Where(x => x.Status.Contains("Отменена пациентом"));
-                    break;
-            }
-            */
             return View(await doctorReferralQuery.AsNoTracking().ToListAsync());
         }
 

@@ -106,6 +106,8 @@ namespace Polyclinic.Controllers
         }
 
         // GET: Receptionists/Edit/5
+        [Authorize(Roles = "Admin")]
+
 
         public async Task<IActionResult> Edit(int? id)
         {
@@ -186,6 +188,7 @@ namespace Polyclinic.Controllers
         // POST: Receptionists/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
 
         public async Task<IActionResult> DeleteConfirmed(int id)
         {

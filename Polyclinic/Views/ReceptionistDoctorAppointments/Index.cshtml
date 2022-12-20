@@ -14,14 +14,17 @@
     <p>
         <p>Поиск</p>
     <p style="color:red;">@Html.ValidationMessage("error_msg")</p>
-    <!--
-    <input type="search" placeholder="Введите ФИО пациента (Обязательно)" value="1" name="option" style="width:100px;" hidden />
-    -->
+    <input type="search" placeholder="Введите ФИО пациента" value="@ViewData["PatientFIO"]" name="PatientFIO" style="width:600px;" />
+        <p>Дата рождения пациента</p>
+    <input type="date" value="@ViewData["PatientBirthDate"]" name="PatientBirthDate" style="width:300px;" />
+    <input type="submit" value="Search" class="btn btn-primary" />
+    
+    <p></p>
     <input type="submit" value="Ожидает подтверждения" name="option" class="btn btn-primary"></input>
     <input type="submit" value="Подтверждена" name="option" class="btn btn-primary" />
     <input type="submit" value="Отменена регистраутрой" name="option" class="btn btn-primary" />
     <input type="submit" value="Отменена пациентом" name="option" class="btn btn-primary" />
-    <p><a asp-action="Index">Получить список всех пациентов</a></p>
+    <p><a asp-action="Index">Получить список всех заявок</a></p>
     </p>
 </form>
 <table class="table">

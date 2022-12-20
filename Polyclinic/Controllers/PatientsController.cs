@@ -124,6 +124,7 @@ namespace Polyclinic.Controllers
         }
 
         // GET: Patients/Edit/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Patients == null)
@@ -145,6 +146,7 @@ namespace Polyclinic.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,LastName,MiddleName,BirthDate,PolyclinicUserID,PolisID,PoilsCompany,PolisEndDate,SnilsNumber,WorkPlace")] Patient patient)
         {
             if (id != patient.Id)
@@ -177,6 +179,7 @@ namespace Polyclinic.Controllers
         }
 
         // GET: Patients/Delete/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Patients == null)
@@ -198,6 +201,7 @@ namespace Polyclinic.Controllers
         // POST: Patients/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.Patients == null)

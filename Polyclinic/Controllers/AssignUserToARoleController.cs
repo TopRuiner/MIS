@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Polyclinic.Data;
@@ -14,13 +15,10 @@ namespace Polyclinic.Controllers
         {
             _context = context;
         }
-        // GET: AssignUserToARoleController
-        public ActionResult Index()
-        {
-            return View();
-        }
 
         // GET: AssignUserToARoleController/Create
+        [Authorize(Roles = "Admin")]
+
         public IActionResult Create()
         {
             ViewBag.Users = new SelectList(_context.Users, "Id", "Email");
@@ -31,6 +29,7 @@ namespace Polyclinic.Controllers
         // POST: AssignUserToARoleController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
 
         public async Task<IActionResult> Create([Bind("UserId,Role")] AssignUserToARoleModel assignUserToARole)
         {
