@@ -100,10 +100,18 @@ namespace Polyclinic.Controllers
                 var userRoleAfter = new IdentityUserRole<string> { RoleId = "7", UserId = patient.PolyclinicUserID };
                 _context.UserRoles.Remove(userRoleBefore);
                 _context.UserRoles.Add(userRoleAfter);
-                await _context.SaveChangesAsync();
 
-                await _signInManager.SignOutAsync();
+                await _context.SaveChangesAsync();
+                PolyclinicUser user = _context.Users.Find(patient.PolyclinicUserID);
+
+
+                //await _signInManager.SignOutAsync();
+                //await _signInManager.SignInAsync(user, true);
+                await _signInManager.RefreshSignInAsync(user);
+
                 return Redirect("/");
+
+
                 //return RedirectToAction(nameof(Index));
             }
             string messages = string.Join("; ", ModelState.Values

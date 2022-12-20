@@ -15,7 +15,7 @@ builder.Services.AddDbContext<PolyclinicContext>(options =>
 
 builder.Services.AddDefaultIdentity<PolyclinicUser>(options => options.SignIn.RequireConfirmedAccount = false)
     .AddRoles<IdentityRole>()
-    .AddEntityFrameworkStores<PolyclinicContext>();
+    .AddEntityFrameworkStores<PolyclinicContext>().AddDefaultTokenProviders().AddDefaultUI();
 
 builder.Services.AddAuthorization(options =>
 {
@@ -36,6 +36,7 @@ builder.Services.AddSession(options =>
 {
     options.IdleTimeout = TimeSpan.FromMinutes(60);
 });
+
 
 var app = builder.Build();
 
