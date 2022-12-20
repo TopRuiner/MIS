@@ -134,6 +134,22 @@ namespace Polyclinic.Controllers
                 {
                     _context.Update(doctorAppointment);
                     await _context.SaveChangesAsync();
+                    HttpClient client = new HttpClient();
+                    var patient = _context.Patients.Find(doctorAppointment.PatientId);
+                    var doctor = _context.Doctors.Find(doctorAppointment.DoctorId);
+                    var patientUser = _context.Users.Find(patient.PolyclinicUserID);
+                    string email = patientUser.Email;
+                    string message = "Ваша заявка на прием ко врачу подтверждена регистратурой\nДанные направления:" + "\nКабинет:" + doctorAppointment.CabinetId + "\nВремя:" + doctorAppointment.DateTime + "\nДоктор:" + doctor.ReturnFIOAndSpeciality;
+                    string url = string.Format("https://localhost:7262/Approved/SendEmailNotification?email={0}&message={1}", email, message);
+                    HttpResponseMessage response = client.GetAsync(url).Result;
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var requestResult = new JsonResult(response.Content.ReadAsStringAsync().Result);
+                    }
+                    else
+                    {
+                        var requestResult = "Ошибка";
+                    }
                 }
                 catch (DbUpdateConcurrencyException)
                 {
