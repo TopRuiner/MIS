@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Polyclinic.Areas.Identity.Data;
 using Polyclinic.Data;
 using Polyclinic.Models;
 
@@ -10,14 +12,16 @@ namespace Polyclinic.Controllers
     public class ReceptionistDoctorAppointmentsController : Controller
     {
         private readonly PolyclinicContext _context;
+        private readonly UserManager<PolyclinicUser> _userManager;
 
-        public ReceptionistDoctorAppointmentsController(PolyclinicContext context)
+        public ReceptionistDoctorAppointmentsController(UserManager<PolyclinicUser> userManager, PolyclinicContext context)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: ReceptionistDoctorAppointments
-        [Authorize(Roles = "Receptionist")]
+        [Authorize(Roles = "Receptionist,Doctor")]
         public async Task<IActionResult> Index()
         {
             var polyclinicContext = _context.DoctorAppointments.Include(d => d.Doctor).Include(d => d.Patient);

@@ -22,7 +22,7 @@ namespace Polyclinic.Controllers
         }
 
         // GET: DoctorAppointments
-        [Authorize(Roles = "Patient")]
+        [Authorize(Roles = "Patient,Admin,Receptionist")]
         public async Task<IActionResult> Index()
         {
             var user = _context.Patients.Where(u => u.PolyclinicUserID == _userManager.GetUserId(HttpContext.User)).FirstOrDefault();
@@ -31,7 +31,7 @@ namespace Polyclinic.Controllers
             return View(await polyclinicContext.ToListAsync());
         }
         [HttpGet]
-        [Authorize(Roles = "Patient")]
+        [Authorize(Roles = "Patient,Admin,Receptionist")]
 
         public async Task<IActionResult> Index(string option)
         {
@@ -46,7 +46,7 @@ namespace Polyclinic.Controllers
         }
 
         // GET: DoctorAppointments/Details/5
-        [Authorize(Roles = "Receptionist")]
+        [Authorize(Roles = "Receptionist,Admin")]
 
         public async Task<IActionResult> Details(int? id)
         {
@@ -68,7 +68,7 @@ namespace Polyclinic.Controllers
         }
 
         // GET: DoctorAppointments/Create
-        [Authorize(Roles = "Patient")]
+        [Authorize(Roles = "Patient,Admin,Receptionist")]
 
         public IActionResult Create()
         {
@@ -93,7 +93,7 @@ namespace Polyclinic.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Patient")]
+        [Authorize(Roles = "Patient,Admin,Receptionist")]
 
         public async Task<IActionResult> Create([Bind("Id,PatientId,CabinetId,DateTime,Status,DoctorId")] DoctorAppointment doctorAppointment)
         {
@@ -114,7 +114,7 @@ namespace Polyclinic.Controllers
         }
 
         // GET: DoctorAppointments/Edit/5
-        [Authorize(Roles = "Receptionist")]
+        [Authorize(Roles = "Receptionist,Admin")]
 
         public async Task<IActionResult> Edit(int? id)
         {
@@ -138,7 +138,7 @@ namespace Polyclinic.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Receptionist")]
+        [Authorize(Roles = "Receptionist,Admin")]
 
         public async Task<IActionResult> Edit(int id, [Bind("Id,PatientId,CabinetId,DateTime,Status,DoctorId")] DoctorAppointment doctorAppointment)
         {
@@ -173,7 +173,7 @@ namespace Polyclinic.Controllers
         }
 
         // GET: DoctorAppointments/Delete/5
-        [Authorize(Roles = "Receptionist")]
+        [Authorize(Roles = "Receptionist,Admin")]
 
         public async Task<IActionResult> Delete(int? id)
         {
@@ -195,7 +195,7 @@ namespace Polyclinic.Controllers
         }
 
         // POST: DoctorAppointments/Delete/5
-        [Authorize(Roles = "Receptionist")]
+        [Authorize(Roles = "Receptionist,Admin")]
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]

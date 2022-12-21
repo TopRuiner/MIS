@@ -21,7 +21,7 @@ namespace Polyclinic.Controllers
         }
 
         // GET: Doctors
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Patient")]
         public async Task<IActionResult> Index()
         {
             var polyclinicContext = _context.Doctors.Include(d => d.PolyclinicUser);

@@ -25,9 +25,12 @@
             <th>
                 @Html.DisplayNameFor(model => model.BirthDate)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PolyclinicUser)
-            </th>
+            @if (this.User.IsInRole("Admin"))
+            {
+                <th>
+                    @Html.DisplayNameFor(model => model.PolyclinicUser)
+                </th>
+            }
             <th>
                 @Html.DisplayNameFor(model => model.Speciality)
             </th>
@@ -55,9 +58,12 @@
             <td>
                 @Html.DisplayFor(modelItem => item.ReturnDateForDisplay)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PolyclinicUser.Id)
-            </td>
+             @if (this.User.IsInRole("Admin"))
+             {
+                <td>
+                    @Html.DisplayFor(modelItem => item.PolyclinicUser.Id)
+                </td>
+             }
             <td>
                 @Html.DisplayFor(modelItem => item.Speciality)
             </td>
@@ -67,11 +73,14 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Degree)
             </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
+            @if (this.User.IsInRole("Admin"))
+            {
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            }
         </tr>
 }
     </tbody>
