@@ -125,8 +125,8 @@ namespace Polyclinic.Controllers
                 return NotFound();
             }
             //ViewData["DoctorId"] = new SelectList(_context.Doctors, "Id", "Id", doctorAppointment.DoctorId);
-            ViewBag.Doctors = new SelectList(_context.Doctors, "Id", "ReturnFIOAndSpeciality");
             //ViewData["PatientId"] = new SelectList(_context.Patients, "Id", "Id", doctorAppointment.PatientId);
+            ViewBag.Doctors = new SelectList(_context.Doctors, "Id", "ReturnFIOAndSpeciality");
             ViewBag.Patients = new SelectList(_context.Patients, "Id", "ReturnFIOAndBirthDate");
             ViewData["Status"] = "Подтверждена";
             return View(doctorAppointment);
@@ -183,8 +183,9 @@ namespace Polyclinic.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["DoctorId"] = new SelectList(_context.Doctors, "Id", "Id", doctorAppointment.DoctorId);
-            ViewData["PatientId"] = new SelectList(_context.Patients, "Id", "Id", doctorAppointment.PatientId);
+            ViewBag.Doctors = new SelectList(_context.Doctors, "Id", "ReturnFIOAndSpeciality");
+            ViewBag.Patients = new SelectList(_context.Patients, "Id", "ReturnFIOAndBirthDate");
+            ViewData["Status"] = "Подтверждена";
             return View(doctorAppointment);
         }
 

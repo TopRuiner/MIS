@@ -8,6 +8,7 @@ namespace Polyclinic.Models
         [Key]
         public int Id { get; set; }
         [ForeignKey("Diagnosis")]
+        [Display(Name = "Диагноз")]
         public string? DiagnosisId { get; set; }
         public virtual Diagnosis? Diagnosis { get; set; }
         [ForeignKey("Doctor")]

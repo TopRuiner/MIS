@@ -8,19 +8,28 @@ namespace Polyclinic.Models
     {
         [Key]
         public int Id { get; set; }
+        [Display(Name = "Имя")]
         public string FirstName { get; set; }
+        [Display(Name = "Фамилия")]
         public string LastName { get; set; }
+        [Display(Name = "Отчество")]
         public string? MiddleName { get; set; }
         [Column(TypeName = "date")]
+        [Display(Name = "Дата рождения")]
         public DateTime? BirthDate { get; set; }
         [ForeignKey("PolyclinicUser")]
         public string? PolyclinicUserID { get; set; }
         public virtual PolyclinicUser? PolyclinicUser { get; set; }
+        [Display(Name = "Номер полиса")]
         public int PolisID { get; set; }
+        [Display(Name = "Компания полиса")]
         public string PoilsCompany { get; set; }
         [Column(TypeName = "date")]
+        [Display(Name = "Дата окончания полиса")]
         public DateTime? PolisEndDate { get; set; }
+        [Display(Name = "Номер снилса")]
         public int SnilsNumber { get; set; }
+        [Display(Name = "Место работы")]
         public string? WorkPlace { get; set; }
         public IEnumerable<Analysis>? Analyses { get; set; }
         public IEnumerable<Examination>? Examinations { get; set; }

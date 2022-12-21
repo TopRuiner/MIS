@@ -5,11 +5,8 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
+<h1>Список пациентов</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
 <form method="get" asp-action="Index">
     <p>
         <p>Поиск</p>
@@ -28,10 +25,10 @@
                 @Html.DisplayNameFor(model => model.Id)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.FirstName)
+                @Html.DisplayNameFor(model => model.LastName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.LastName)
+                @Html.DisplayNameFor(model => model.FirstName)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.MiddleName)
@@ -39,11 +36,12 @@
             <th>
                 @Html.DisplayNameFor(model => model.BirthDate)
             </th>
-            <!--
+            @if (this.User.IsInRole("Admin"))
+                        {
             <th>
             @Html.DisplayNameFor(model => model.PolyclinicUser)
             </th>
-            -->
+                        }
             <th>
                 @Html.DisplayNameFor(model => model.PolisID)
             </th>
@@ -70,10 +68,10 @@
                     @Html.DisplayFor(modelItem => item.Id)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.FirstName)
+                    @Html.DisplayFor(modelItem => item.LastName)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.LastName)
+                    @Html.DisplayFor(modelItem => item.FirstName)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.MiddleName)
@@ -81,11 +79,12 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.ReturnBirthDateForDisplay)
                 </td>
-                <!--
-                <td>
-                @Html.DisplayFor(modelItem => item.PolyclinicUser.Id)
+                @if (this.User.IsInRole("Admin"))
+                {
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PolyclinicUser.Email)
                 </td>
-                 -->
+                }
                 <td>
                     @Html.DisplayFor(modelItem => item.PolisID)
                 </td>
@@ -101,11 +100,14 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.WorkPlace)
                 </td>
+                @if (this.User.IsInRole("Admin"))
+                        {
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                     <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
                     <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                 </td>
+                        }
             </tr>
         }
     </tbody>

@@ -97,7 +97,8 @@ namespace Polyclinic.Controllers
                 _context.UserRoles.Remove(userRoleBefore);
                 _context.UserRoles.Add(userRoleAfter);
                 await _context.SaveChangesAsync();
-                await _signInManager.SignOutAsync();
+                PolyclinicUser user = _context.Users.Find(receptionist.PolyclinicUserID);
+                await _signInManager.RefreshSignInAsync(user);
 
                 return Redirect("/");
             }

@@ -10,18 +10,18 @@ using System.Security.Claims;
 
 namespace Polyclinic.Controllers
 {
-    public class DoctorAppointmentsController : Controller
+    public class PatientDoctorAppointmentsController : Controller
     {
         private readonly PolyclinicContext _context;
         private readonly UserManager<PolyclinicUser> _userManager;
 
-        public DoctorAppointmentsController(UserManager<PolyclinicUser> userManager, PolyclinicContext context)
+        public PatientDoctorAppointmentsController(UserManager<PolyclinicUser> userManager, PolyclinicContext context)
         {
             _context = context;
             _userManager = userManager;
         }
 
-        // GET: DoctorAppointments
+        // GET: PatientDoctorAppointments
         [Authorize(Roles = "Patient,Admin,Receptionist")]
         public async Task<IActionResult> Index()
         {
@@ -45,7 +45,7 @@ namespace Polyclinic.Controllers
             return View(await doctorReferralQuery.AsNoTracking().ToListAsync());
         }
 
-        // GET: DoctorAppointments/Details/5
+        // GET: PatientDoctorAppointments/Details/5
         [Authorize(Roles = "Receptionist,Admin")]
 
         public async Task<IActionResult> Details(int? id)
@@ -67,7 +67,7 @@ namespace Polyclinic.Controllers
             return View(doctorAppointment);
         }
 
-        // GET: DoctorAppointments/Create
+        // GET: PatientDoctorAppointments/Create
         [Authorize(Roles = "Patient,Admin,Receptionist")]
 
         public IActionResult Create()
@@ -88,7 +88,7 @@ namespace Polyclinic.Controllers
             return View();
         }
 
-        // POST: DoctorAppointments/Create
+        // POST: PatientDoctorAppointments/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -113,7 +113,7 @@ namespace Polyclinic.Controllers
             return View(doctorAppointment);
         }
 
-        // GET: DoctorAppointments/Edit/5
+        // GET: PatientDoctorAppointments/Edit/5
         [Authorize(Roles = "Receptionist,Admin")]
 
         public async Task<IActionResult> Edit(int? id)
@@ -133,7 +133,7 @@ namespace Polyclinic.Controllers
             return View(doctorAppointment);
         }
 
-        // POST: DoctorAppointments/Edit/5
+        // POST: PatientDoctorAppointments/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -172,7 +172,7 @@ namespace Polyclinic.Controllers
             return View(doctorAppointment);
         }
 
-        // GET: DoctorAppointments/Delete/5
+        // GET: PatientDoctorAppointments/Delete/5
         [Authorize(Roles = "Receptionist,Admin")]
 
         public async Task<IActionResult> Delete(int? id)
@@ -194,7 +194,7 @@ namespace Polyclinic.Controllers
             return View(doctorAppointment);
         }
 
-        // POST: DoctorAppointments/Delete/5
+        // POST: PatientDoctorAppointments/Delete/5
         [Authorize(Roles = "Receptionist,Admin")]
 
         [HttpPost, ActionName("Delete")]

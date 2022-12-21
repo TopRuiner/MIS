@@ -5,23 +5,25 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
+<h1>Заявки на прием у врача</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Подать заявку</a>
 </p>
 <p>
 <form method="get" asp-action="Index">
     <p>
-        <p>Поиск</p>
+        <h4>Поиск</h4>
     <p style="color:red;">@Html.ValidationMessage("error_msg")</p>
     <!--
     <input type="search" placeholder="Введите ФИО пациента (Обязательно)" value="1" name="option" style="width:100px;" hidden />
     -->
+    <h4>Фильтрация</h4>
     <input type="submit" value="Ожидает подтверждения" name="option" class="btn btn-primary"></input>
     <input type="submit" value="Подтверждена" name="option" class="btn btn-primary" />
     <input type="submit" value="Отменена регистраутрой" name="option" class="btn btn-primary" />
     <input type="submit" value="Отменена пациентом" name="option" class="btn btn-primary" />
+        <input type="submit" value="Использована" name="option" class="btn btn-primary" />
     <p><a asp-action="Index">Получить список всех заявок</a></p>
     </p>
 </form>

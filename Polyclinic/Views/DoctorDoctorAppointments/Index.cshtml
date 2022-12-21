@@ -5,21 +5,20 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
+<h1>Направления ко врачам</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Создать</a>
 </p>
 <form method="get" asp-action="Index">
     <p>
-        <h2>Поиск</h2>
+        <p>Поиск</p>
     <p style="color:red;">@Html.ValidationMessage("error_msg")</p>
     <input type="search" placeholder="Введите ФИО пациента" value="@ViewData["PatientFIO"]" name="PatientFIO" style="width:600px;" />
         <p>Дата рождения пациента</p>
     <input type="date" value="@ViewData["PatientBirthDate"]" name="PatientBirthDate" style="width:300px;" />
     <input type="submit" value="Search" class="btn btn-primary" />
-    
-    <p></p>
+    <h4>Фильтрация</h4>
     <input type="submit" value="Ожидает подтверждения" name="option" class="btn btn-primary"></input>
     <input type="submit" value="Подтверждена" name="option" class="btn btn-primary" />
     <input type="submit" value="Отменена регистраутрой" name="option" class="btn btn-primary" />
@@ -67,13 +66,12 @@
             <td>
                     @Html.DisplayFor(modelItem => item.Doctor.ReturnFIO)
             </td>
-                    @if (this.User.IsInRole("Receptionist,Admin"))
+                    @if (this.User.IsInRole("Receptionist,Admin,Doctor"))
                     {
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> |
-                <a asp-action="Decline" asp-route-id="@item.Id">Decline</a>
+                <a asp-action="Close" asp-route-id="@item.Id">Close</a>
             </td>
                     }
         </tr>

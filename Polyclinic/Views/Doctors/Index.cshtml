@@ -5,11 +5,28 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
+<h1>Список врачей</h1>
 
+@if (this.User.IsInRole("Admin"))
+             {
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Создать</a>
 </p>
+             }
+<form method="get" asp-action="Index">
+    <p>
+        <h2>Поиск</h2>
+    <p style="color:red;">@Html.ValidationMessage("error_msg")</p>
+    <p>Фамилия врача</p>
+
+    <input type="search" placeholder="Введите фамилию врача (Необязательно)" value="@ViewData["DoctorLastName"]" name="DoctorLastName" style="width:600px;" />
+        <p>Специальность врача</p>
+    <input type="search" placeholder="Введите специальность врача (Необязательно)" value="@ViewData["DoctorSpeciality"]" name="DoctorSpeciality" style="width:600px;" />
+    <input type="submit" value="Search" class="btn btn-primary" />
+
+    <p><a asp-action="Index">Получить список всех врачей</a></p>
+    </p>
+</form>
 <table class="table">
     <thead>
         <tr>

@@ -27,7 +27,24 @@ namespace Polyclinic.Controllers
             var polyclinicContext = _context.Doctors.Include(d => d.PolyclinicUser);
             return View(await polyclinicContext.ToListAsync());
         }
+        [HttpGet]
+        [Authorize(Roles = "Admin,Patient,Doctor,Receptionist")]
 
+        public async Task<IActionResult> Index(string? doctorLastName, string? doctorSpeciality)
+        {
+            ViewData["DoctorLastName"] = doctorLastName;
+            ViewData["DoctorSpeciality"] = doctorSpeciality;
+            var doctorsQuery = from x in _context.Doctors.Include(d => d.PolyclinicUser) select x;
+            if (!String.IsNullOrEmpty(doctorLastName))
+            {
+                doctorsQuery = doctorsQuery.Where(x => x.LastName.Contains(doctorLastName));
+            }
+            if (!String.IsNullOrEmpty(doctorSpeciality))
+            {
+                doctorsQuery = doctorsQuery.Where(x => x.Speciality.Contains(doctorSpeciality));
+            }
+            return View(await doctorsQuery.AsNoTracking().ToListAsync());
+        }
         // GET: Doctors/Details/5
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Details(int? id)
@@ -72,7 +89,9 @@ namespace Polyclinic.Controllers
                 _context.UserRoles.Remove(userRoleBefore);
                 _context.UserRoles.Add(userRoleAfter);
                 await _context.SaveChangesAsync();
-                await _signInManager.SignOutAsync();
+
+                PolyclinicUser user = _context.Users.Find(doctor.PolyclinicUserID);
+                await _signInManager.RefreshSignInAsync(user);
                 return RedirectToAction(nameof(Index));
             }
             ViewData["PolyclinicUserID"] = new SelectList(_context.Users, "Id", "Id", doctor.PolyclinicUserID);

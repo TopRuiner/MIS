@@ -31,19 +31,27 @@
         }
         @if (this.User.IsInRole("Patient"))
         {
+            <h3 class="display-5 fw-bold">Пациент</h3>
+
              <p class="lead mb-4">Доступные Вам функции представлены ниже</p>
-             <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
-                <a href="/DoctorAppointments/Create" class="btn btn-primary btn-lg px-4 gap-3">Подать заявление на прием у врача</a>
-                <a href="/DoctorAppointments" class="btn btn-primary btn-lg px-4 gap-3">Посмотреть список всех заявлений</a>
+             <div class="d-grid gap-2 justify-content-sm-center">
+                <a href="/PatientDoctorAppointments/Create" class="btn btn-primary btn-lg px-4 gap-3">Подать заявку на прием у врача</a>
+                <a href="/PatientDoctorAppointments" class="btn btn-primary btn-lg px-4 gap-3">Cписок всех заявок</a>
                 <a href="/Doctors" class="btn btn-primary btn-lg px-4 gap-3">Посмотреть список врачей</a>
+                <a href="/PatientInspections" class="btn btn-primary btn-lg px-4 gap-3">Посмотреть список осмотров</a>
              </div>
         }
         @if (this.User.IsInRole("Doctor"))
         {
+            <h3 class="display-5 fw-bold">Доктор</h3>
+
              <p class="lead mb-4">Доступные Вам функции представлены ниже</p>
-             <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+             <div class="d-grid gap-2 justify-content-sm-center">
                 <a href="/Patients" class="btn btn-primary btn-lg px-4 gap-3">Список пациентов</a>
-                <a href="/ReceptionistDoctorAppointments" class="btn btn-primary btn-lg px-4 gap-3">Посмотреть список всех заявлений</a>
+                <a href="/Diagnoses" class="btn btn-primary btn-lg px-4 gap-3">Справочник диагнозов</a>
+                <a href="/DoctorDoctorAppointments" class="btn btn-primary btn-lg px-4 gap-3">Посмотреть список всех заявлений</a>
+                <a href="/DoctorInspections" class="btn btn-primary btn-lg px-4 gap-3">Посмотреть список осмотров</a>
+                <a href="/DoctorInspections/Create" class="btn btn-primary btn-lg px-4 gap-3">Создать осмотр</a>
              </div>
         }
         @if (this.User.IsInRole("CanRegisterAsPatient"))
@@ -52,6 +60,16 @@
             <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
                 <a href="/Patients/Create" class="btn btn-primary btn-lg px-4 gap-3">Подтвердить данные</a>
             </div>
+        }
+        @if (this.User.IsInRole("Receptionist"))
+        {
+            <h3 class="display-5 fw-bold">Работник регистратуры</h3>
+                 <p class="lead mb-4">Доступные Вам функции представлены ниже</p>
+                 <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                    <a href="/Patients" class="btn btn-primary btn-lg px-4 gap-3">Список пациентов</a>
+                    <a href="/Diagnoses" class="btn btn-primary btn-lg px-4 gap-3">Справочник диагнозов</a>
+                    <a href="/DoctorDoctorAppointments" class="btn btn-primary btn-lg px-4 gap-3">Посмотреть список всех заявлений</a>
+                 </div>
         }
     </div>
 </div>
