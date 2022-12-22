@@ -1,0 +1,4 @@
+Добавить роль CanRegisterAsAssistant
+Assistant
+!!!(В файле роли присвоение поменять)	
+

@@ -1,6 +1,6 @@
 ﻿@using Polyclinic.Areas.Identity.Data;
 @using Polyclinic.Models;
-@model Polyclinic.Models.Assistant
+@model Polyclinic.Models.FunctionalDiagnosticsDoctor
 
 @{
     ViewData["Title"] = "Create";
@@ -10,9 +10,10 @@
 @{
     string userId = _userManager.GetUserId(User);
 }
-<h1>Регистрация как лаборант</h1>
 
-<h4>Лаборант</h4>
+<h1>Регистрация как врач функциональной диагностики</h1>
+
+<h4>Врач функциональной диагностики</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -20,9 +21,9 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="PolyclinicUserID" class="control-label"></label>
-                <input asp-for="PolyclinicUserID" class="form-control" asp-items="ViewBag.PolyclinicUserID" value=@userId readonly></input>
+                <input asp-for="PolyclinicUserID" class="form-control" value=@userId readonly />
+                <span asp-validation-for="PolyclinicUserID" class="text-danger"></span>
             </div>
-            
             <div class="form-group">
                 <label asp-for="LastName" class="control-label"></label>
                 <input asp-for="LastName" class="form-control" />
@@ -57,7 +58,6 @@
         <a asp-action="Index">Back to List</a>
     </div>
 }
-
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");

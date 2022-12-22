@@ -1,7 +1,15 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Numerics;
+using System.Runtime.InteropServices;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Polyclinic.Areas.Identity.Data;
 using Polyclinic.Data;
 using Polyclinic.Models;
 
@@ -10,15 +18,16 @@ namespace Polyclinic.Controllers
     public class AssistantsController : Controller
     {
         private readonly PolyclinicContext _context;
+        private readonly SignInManager<PolyclinicUser> _signInManager;
 
-        public AssistantsController(PolyclinicContext context)
+        public AssistantsController(SignInManager<PolyclinicUser> signInManager, PolyclinicContext context)
         {
             _context = context;
+            _signInManager = signInManager;
         }
 
         // GET: Assistants
-        [Authorize(Roles = "Admin")]
-
+        [Authorize (Roles ="Admin")]
         public async Task<IActionResult> Index()
         {
             var polyclinicContext = _context.Assistants.Include(a => a.PolyclinicUser);
@@ -47,7 +56,7 @@ namespace Polyclinic.Controllers
         }
 
         // GET: Assistants/Create
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,CanRegisterAsAssistant")]
 
         public IActionResult Create()
         {
@@ -60,14 +69,21 @@ namespace Polyclinic.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,CanRegisterAsAssistant")]
 
         public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,MiddleName,BirthDate,PolyclinicUserID")] Assistant assistant)
         {
             if (ModelState.IsValid)
             {
                 _context.Add(assistant);
+                var userRoleBefore = new IdentityUserRole<string> { RoleId = "2", UserId = assistant.PolyclinicUserID };
+                var userRoleAfter = new IdentityUserRole<string> { RoleId = "1", UserId = assistant.PolyclinicUserID };
+                _context.UserRoles.Remove(userRoleBefore);
+                _context.UserRoles.Add(userRoleAfter);
                 await _context.SaveChangesAsync();
+                PolyclinicUser user = _context.Users.Find(assistant.PolyclinicUserID);
+                await _signInManager.RefreshSignInAsync(user);
+
                 return RedirectToAction(nameof(Index));
             }
             ViewData["PolyclinicUserID"] = new SelectList(_context.Users, "Id", "Id", assistant.PolyclinicUserID);
@@ -78,7 +94,6 @@ namespace Polyclinic.Controllers
         [Authorize(Roles = "Admin")]
 
         public async Task<IActionResult> Edit(int? id)
-
         {
             if (id == null || _context.Assistants == null)
             {
@@ -169,14 +184,14 @@ namespace Polyclinic.Controllers
             {
                 _context.Assistants.Remove(assistant);
             }
-
+            
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool AssistantExists(int id)
         {
-            return _context.Assistants.Any(e => e.Id == id);
+          return _context.Assistants.Any(e => e.Id == id);
         }
     }
 }
