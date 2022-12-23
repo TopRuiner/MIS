@@ -13,11 +13,15 @@ namespace Polyclinic.Models
         public string Description { get; set; }
         [ForeignKey("FunctionalDiagnosticsDoctor")]
         [Display(Name = "Врач функциональной диагностики")]
-        public int FunctionalDiagnosticsDoctorId { get; set; }
+        public int? FunctionalDiagnosticsDoctorId { get; set; }
+        [Display(Name = "Врач функциональной диагностики")]
+
         public virtual FunctionalDiagnosticsDoctor? FunctionalDiagnosticsDoctor { get; set; }
         [ForeignKey("Patient")]
         [Display(Name = "Пациент")]
-        public int PatientId { get; set; }
+        public int? PatientId { get; set; }
+        [Display(Name = "Пациент")]
+
         public virtual Patient? Patient { get; set; }
 
     }

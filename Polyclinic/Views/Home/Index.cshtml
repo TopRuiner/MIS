@@ -14,7 +14,7 @@
                 <a href="/Identity/Account/Login" class="btn btn-primary btn-lg px-4 gap-3">Войти</a>
             </div>
         }
-        
+
         @if (this.User.IsInRole("CanRegisterAsDoctor"))
         {
             <p class="lead mb-4">Для работы в системе как доктор необходимо подтвердить свои данные</p>
@@ -22,37 +22,67 @@
                 <a href="/Doctors/Create" class="btn btn-primary btn-lg px-4 gap-3">Подтвердить данные</a>
             </div>
         }
+        @if (this.User.IsInRole("CanRegisterAsAssistant"))
+        {
+            <p class="lead mb-4">Для работы в системе как лаборант необходимо подтвердить свои данные</p>
+            <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                <a href="/Assistants/Create" class="btn btn-primary btn-lg px-4 gap-3">Подтвердить данные</a>
+            </div>
+        }
+        @if (this.User.IsInRole("CanRegisterAsFunctionalDiagnosticsDoctor"))
+        {
+            <p class="lead mb-4">Для работы в системе как врач функциональной диагностики необходимо подтвердить свои данные</p>
+            <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                <a href="/FunctionalDiagnosticsDoctors/Create" class="btn btn-primary btn-lg px-4 gap-3">Подтвердить данные</a>
+            </div>
+        }
         @if (this.User.IsInRole("CanRegisterAsReceptionist"))
         {
-             <p class="lead mb-4">Для работы в системе как работник регистратуры необходимо подтвердить свои данные</p>
-             <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
-                 <a href="/Receptionists/Create" class="btn btn-primary btn-lg px-4 gap-3">Подтвердить данные</a>
-             </div>
+            <p class="lead mb-4">Для работы в системе как работник регистратуры необходимо подтвердить свои данные</p>
+            <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                <a href="/Receptionists/Create" class="btn btn-primary btn-lg px-4 gap-3">Подтвердить данные</a>
+            </div>
         }
-        @if (this.User.IsInRole("Patient"))
+        @if (this.User.IsInRole("Assistant"))
         {
-            <h3 class="display-5 fw-bold">Пациент</h3>
+            <p class="lead mb-4">Доступные Вам функции представлены ниже</p>
+            <div class="d-grid gap-2  justify-content-sm-center">
+                <a href="/Analyses" class="btn btn-primary btn-lg px-4 gap-3">Список анализов</a>
+                <a href="/Analyses/Create" class="btn btn-primary btn-lg px-4 gap-3">Создать анализ</a>
+                <a href="/AnalysisReferrals" class="btn btn-primary btn-lg px-4 gap-3">Список направлений на анализ</a>
+                <a href="/Patients" class="btn btn-primary btn-lg px-4 gap-3">Список пациентов</a>
 
-             <p class="lead mb-4">Доступные Вам функции представлены ниже</p>
-             <div class="d-grid gap-2 justify-content-sm-center">
-                <a href="/PatientDoctorAppointments/Create" class="btn btn-primary btn-lg px-4 gap-3">Подать заявку на прием у врача</a>
-                <a href="/PatientDoctorAppointments" class="btn btn-primary btn-lg px-4 gap-3">Cписок всех заявок</a>
-                <a href="/Doctors" class="btn btn-primary btn-lg px-4 gap-3">Посмотреть список врачей</a>
-                <a href="/PatientInspections" class="btn btn-primary btn-lg px-4 gap-3">Посмотреть список осмотров</a>
-             </div>
+
+            </div>
+        }
+        @if (this.User.IsInRole("FunctionalDiagnosticsDoctor"))
+        {
+            <p class="lead mb-4">Доступные Вам функции представлены ниже</p>
+            <div class="d-grid gap-2  justify-content-sm-center">
+                <a href="/Examinations" class="btn btn-primary btn-lg px-4 gap-3">Список обследований</a>
+                <a href="/Examinations/Create" class="btn btn-primary btn-lg px-4 gap-3">Создать обследование</a>
+                <a href="/ExaminationReferrals" class="btn btn-primary btn-lg px-4 gap-3">Список направлений на обследование</a>
+                <a href="/Patients" class="btn btn-primary btn-lg px-4 gap-3">Список пациентов</a>
+            </div>
         }
         @if (this.User.IsInRole("Doctor"))
         {
             <h3 class="display-5 fw-bold">Доктор</h3>
 
-             <p class="lead mb-4">Доступные Вам функции представлены ниже</p>
-             <div class="d-grid gap-2 justify-content-sm-center">
+            <p class="lead mb-4">Доступные Вам функции представлены ниже</p>
+            <div class="d-grid gap-2 justify-content-sm-center">
                 <a href="/Patients" class="btn btn-primary btn-lg px-4 gap-3">Список пациентов</a>
                 <a href="/Diagnoses" class="btn btn-primary btn-lg px-4 gap-3">Справочник диагнозов</a>
                 <a href="/DoctorDoctorAppointments" class="btn btn-primary btn-lg px-4 gap-3">Посмотреть список всех заявлений</a>
                 <a href="/DoctorInspections" class="btn btn-primary btn-lg px-4 gap-3">Посмотреть список осмотров</a>
                 <a href="/DoctorInspections/Create" class="btn btn-primary btn-lg px-4 gap-3">Создать осмотр</a>
-             </div>
+                <a href="/AnalysisReferrals" class="btn btn-primary btn-lg px-4 gap-3">Посмотреть направления на анализ</a>
+                <a href="/AnalysisReferrals/Create" class="btn btn-primary btn-lg px-4 gap-3">Создать направление на анализ</a>
+                <a href="/ExaminationReferrals" class="btn btn-primary btn-lg px-4 gap-3">Посмотреть направления на обследование</a>
+                <a href="/ExaminationReferrals/Create" class="btn btn-primary btn-lg px-4 gap-3">Создать направление на обследование</a>
+
+
+            </div>
         }
         @if (this.User.IsInRole("CanRegisterAsPatient"))
         {
@@ -64,12 +94,36 @@
         @if (this.User.IsInRole("Receptionist"))
         {
             <h3 class="display-5 fw-bold">Работник регистратуры</h3>
-                 <p class="lead mb-4">Доступные Вам функции представлены ниже</p>
-                 <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
-                    <a href="/Patients" class="btn btn-primary btn-lg px-4 gap-3">Список пациентов</a>
-                    <a href="/Diagnoses" class="btn btn-primary btn-lg px-4 gap-3">Справочник диагнозов</a>
-                    <a href="/DoctorDoctorAppointments" class="btn btn-primary btn-lg px-4 gap-3">Посмотреть список всех заявлений</a>
-                 </div>
+            <p class="lead mb-4">Доступные Вам функции представлены ниже</p>
+            <div class="d-grid gap-2 justify-content-sm-center">
+                <a href="/Patients" class="btn btn-primary btn-lg px-4 gap-3">Список пациентов</a>
+                <a href="/ReceptionistDoctorAppointments" class="btn btn-primary btn-lg px-4 gap-3">Посмотреть список всех заявок</a>
+            </div>
+        }
+        @if (this.User.IsInRole("Admin"))
+        {
+            <h3 class="display-5 fw-bold">Админ</h3>
+            <p class="lead mb-4">Доступные Вам функции представлены ниже</p>
+            <div class="d-grid gap-2 justify-content-sm-center">
+                <a href="/AssignUserToARole/Create" class="btn btn-primary btn-lg px-4 gap-3">Добавить роль пользователю</a>
+
+            </div>
+        }
+        @if (this.User.IsInRole("Patient"))
+        {
+            <h3 class="display-5 fw-bold">Пациент</h3>
+
+            <p class="lead mb-4">Доступные Вам функции представлены ниже</p>
+            <div class="d-grid gap-2 justify-content-sm-center">
+                <a href="/PatientDoctorAppointments/Create" class="btn btn-primary btn-lg px-4 gap-3">Подать заявку на прием у врача</a>
+                <a href="/PatientDoctorAppointments" class="btn btn-primary btn-lg px-4 gap-3">Cписок всех заявок</a>
+                <a href="/Doctors" class="btn btn-primary btn-lg px-4 gap-3">Посмотреть список врачей</a>
+                <a href="/PatientInspections" class="btn btn-primary btn-lg px-4 gap-3">Посмотреть список осмотров</a>
+                <a href="/AnalysisReferrals" class="btn btn-primary btn-lg px-4 gap-3">Посмотреть направления на анализ</a>
+                <a href="/ExaminationReferrals" class="btn btn-primary btn-lg px-4 gap-3">Посмотреть направления на обследование</a>
+                <a href="/Analyses" class="btn btn-primary btn-lg px-4 gap-3">Посмотреть анализы</a>
+                <a href="/Examinations" class="btn btn-primary btn-lg px-4 gap-3">Посмотреть обследования</a>
+            </div>
         }
     </div>
 </div>

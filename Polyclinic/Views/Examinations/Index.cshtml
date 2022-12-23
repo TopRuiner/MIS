@@ -1,0 +1,71 @@
+﻿@model IEnumerable<Polyclinic.Models.Examination>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Обследования</h1>
+@if (this.User.IsInRole("Admin,FunctionalDiagnosticsDoctor"))
+{
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+}
+@if (this.User.IsInRole("Admin,FunctionalDiagnosticsDoctor,Doctor"))
+{
+    <form method="get" asp-action="Index">
+        <p>
+        <p>Поиск</p>
+        <p style="color:red;">@Html.ValidationMessage("error_msg")</p>
+        <input type="search" placeholder="Введите ФИО пациента (Обязательно)" value="@ViewData["PatientFIO"]" name="PatientFIO" style="width:600px;" />
+        <p>Дата рождения пациента (Необязательно)</p>
+        <input type="date" value="@ViewData["PatientBirthDate"]" name="PatientBirthDate" style="width:300px;" />
+        <input type="submit" value="Search" class="btn btn-primary" />
+        <a asp-action="Index">Получить список всех пациентов</a>
+        </p>
+    </form>
+}
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Type)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FunctionalDiagnosticsDoctor)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Patient)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Type)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FunctionalDiagnosticsDoctor.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Patient.Id)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -152,7 +152,7 @@ namespace Polyclinic.Controllers
                 {
                     _context.Update(doctorAppointment);
                     await _context.SaveChangesAsync();
-                    HttpClient client = new HttpClient();
+
                     var patient = _context.Patients.Find(doctorAppointment.PatientId);
                     var doctor = _context.Doctors.Find(doctorAppointment.DoctorId);
                     var patientUser = _context.Users.Find(patient.PolyclinicUserID);
@@ -160,6 +160,8 @@ namespace Polyclinic.Controllers
                     string subject = "Подтверждение заявки на прием ко врачу";
                     string message = "Ваша заявка на прием ко врачу подтверждена регистратурой\nДанные направления:" + "\nКабинет:" + doctorAppointment.CabinetId + "\nВремя:" + doctorAppointment.DateTime + "\nДоктор:" + doctor.ReturnFIOAndSpeciality;
                     string url = string.Format("https://localhost:7262/Approved/SendEmailNotification?email={0}&subject={1}&message={2}", email, subject, message);
+
+                    HttpClient client = new HttpClient();
                     HttpResponseMessage response = client.GetAsync(url).Result;
                     if (response.IsSuccessStatusCode)
                     {

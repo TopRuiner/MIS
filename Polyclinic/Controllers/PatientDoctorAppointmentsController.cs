@@ -20,6 +20,23 @@ namespace Polyclinic.Controllers
             _context = context;
             _userManager = userManager;
         }
+        public async Task<IActionResult> Cancel(int? id)
+        {
+            if (id == null || _context.DoctorAppointments == null)
+            {
+                return NotFound();
+            }
+
+            var doctorAppointment = await _context.DoctorAppointments.FindAsync(id);
+            if (doctorAppointment == null)
+            {
+                return NotFound();
+            }
+            doctorAppointment.Status = "Отменена пациентом";
+            _context.Update(doctorAppointment);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
 
         // GET: PatientDoctorAppointments
         [Authorize(Roles = "Patient,Admin,Receptionist")]

@@ -14,13 +14,17 @@ namespace Polyclinic.Models
         [Display(Name = "Фамилия")]
         public string LastName { get; set; }
         [Display(Name = "Отчество")]
-        public string MiddleName { get; set; }
+        public string? MiddleName { get; set; }
         [Column(TypeName = "date")]
         [Display(Name = "Дата рождения")]
         public DateTime? BirthDate { get; set; }
 
         [ForeignKey("PolyclinicUser")]
+        [Display(Name = "Id пользователя")]
+
         public string? PolyclinicUserID { get; set; }
+        [Display(Name = "Id пользователя")]
+
         public virtual PolyclinicUser? PolyclinicUser { get; set; }
         [NotMapped]
         public string ReturnDateForDisplay
@@ -35,7 +39,15 @@ namespace Polyclinic.Models
         {
             get
             {
-                return FirstName + " " + LastName + " " + MiddleName;
+                return LastName + " " + FirstName + " " + MiddleName;
+            }
+        }
+        [NotMapped]
+        public string ReturnFIOAndBirthDate
+        {
+            get
+            {
+                return LastName + " " + FirstName + " " + MiddleName + " " + this.BirthDate?.ToShortDateString();
             }
         }
 

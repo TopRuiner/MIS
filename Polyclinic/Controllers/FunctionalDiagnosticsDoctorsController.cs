@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Numerics;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -37,7 +31,7 @@ namespace Polyclinic.Controllers
 
         // GET: FunctionalDiagnosticsDoctors/Details/5
         [Authorize(Roles = "Admin")]
-        
+
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.FunctionalDiagnosticsDoctors == null)
@@ -57,7 +51,7 @@ namespace Polyclinic.Controllers
         }
 
         // GET: FunctionalDiagnosticsDoctors/Create
-        [Authorize(Roles = "Admin,CanRegisterAsFunctionalDiagnosicsDoctor")]
+        [Authorize(Roles = "Admin,CanRegisterAsFunctionalDiagnosticsDoctor")]
 
         public IActionResult Create()
         {
@@ -70,28 +64,30 @@ namespace Polyclinic.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin,CanRegisterAsFunctionalDiagnosicsDoctor")]
+        [Authorize(Roles = "Admin,CanRegisterAsFunctionalDiagnosticsDoctor")]
 
         public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,MiddleName,BirthDate,PolyclinicUserID")] FunctionalDiagnosticsDoctor functionalDiagnosticsDoctor)
         {
             if (ModelState.IsValid)
             {
                 _context.Add(functionalDiagnosticsDoctor);
-                var userRoleBefore = new IdentityUserRole<string> { RoleId = "2", UserId = functionalDiagnosticsDoctor.PolyclinicUserID };
-                var userRoleAfter = new IdentityUserRole<string> { RoleId = "1", UserId = functionalDiagnosticsDoctor.PolyclinicUserID };
+                var userRoleBefore = new IdentityUserRole<string> { RoleId = "9", UserId = functionalDiagnosticsDoctor.PolyclinicUserID };
+                var userRoleAfter = new IdentityUserRole<string> { RoleId = "11", UserId = functionalDiagnosticsDoctor.PolyclinicUserID };
                 _context.UserRoles.Remove(userRoleBefore);
                 _context.UserRoles.Add(userRoleAfter);
                 await _context.SaveChangesAsync();
                 PolyclinicUser user = _context.Users.Find(functionalDiagnosticsDoctor.PolyclinicUserID);
                 await _signInManager.RefreshSignInAsync(user);
 
-                return RedirectToAction(nameof(Index));
+                return Redirect("/");
             }
             ViewData["PolyclinicUserID"] = new SelectList(_context.Users, "Id", "Id", functionalDiagnosticsDoctor.PolyclinicUserID);
             return View(functionalDiagnosticsDoctor);
         }
 
         // GET: FunctionalDiagnosticsDoctors/Edit/5
+        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.FunctionalDiagnosticsDoctors == null)
@@ -113,6 +109,8 @@ namespace Polyclinic.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,LastName,MiddleName,BirthDate,PolyclinicUserID")] FunctionalDiagnosticsDoctor functionalDiagnosticsDoctor)
         {
             if (id != functionalDiagnosticsDoctor.Id)
@@ -145,6 +143,8 @@ namespace Polyclinic.Controllers
         }
 
         // GET: FunctionalDiagnosticsDoctors/Delete/5
+        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.FunctionalDiagnosticsDoctors == null)
@@ -166,6 +166,8 @@ namespace Polyclinic.Controllers
         // POST: FunctionalDiagnosticsDoctors/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.FunctionalDiagnosticsDoctors == null)
@@ -177,14 +179,14 @@ namespace Polyclinic.Controllers
             {
                 _context.FunctionalDiagnosticsDoctors.Remove(functionalDiagnosticsDoctor);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool FunctionalDiagnosticsDoctorExists(int id)
         {
-          return _context.FunctionalDiagnosticsDoctors.Any(e => e.Id == id);
+            return _context.FunctionalDiagnosticsDoctors.Any(e => e.Id == id);
         }
     }
 }

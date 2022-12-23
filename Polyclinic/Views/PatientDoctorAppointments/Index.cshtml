@@ -11,73 +11,80 @@
     <a asp-action="Create">Подать заявку</a>
 </p>
 <p>
-<form method="get" asp-action="Index">
-    <p>
-        <h4>Поиск</h4>
-    <p style="color:red;">@Html.ValidationMessage("error_msg")</p>
-    <!--
-    <input type="search" placeholder="Введите ФИО пациента (Обязательно)" value="1" name="option" style="width:100px;" hidden />
-    -->
-    <h4>Фильтрация</h4>
-    <input type="submit" value="Ожидает подтверждения" name="option" class="btn btn-primary"></input>
-    <input type="submit" value="Подтверждена" name="option" class="btn btn-primary" />
-    <input type="submit" value="Отменена регистраутрой" name="option" class="btn btn-primary" />
-    <input type="submit" value="Отменена пациентом" name="option" class="btn btn-primary" />
+    <form method="get" asp-action="Index">
+        <p>
+            <h4>Поиск</h4>
+        <p style="color:red;">@Html.ValidationMessage("error_msg")</p>
+        <!--
+        <input type="search" placeholder="Введите ФИО пациента (Обязательно)" value="1" name="option" style="width:100px;" hidden />
+        -->
+        <h4>Фильтрация</h4>
+        <input type="submit" value="Ожидает подтверждения" name="option" class="btn btn-primary"></input>
+        <input type="submit" value="Подтверждена" name="option" class="btn btn-primary" />
+        <input type="submit" value="Отменена регистраутрой" name="option" class="btn btn-primary" />
+        <input type="submit" value="Отменена пациентом" name="option" class="btn btn-primary" />
         <input type="submit" value="Использована" name="option" class="btn btn-primary" />
-    <p><a asp-action="Index">Получить список всех заявок</a></p>
-    </p>
+        <p><a asp-action="Index">Получить список всех заявок</a></p>
+</p>
 </form>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Patient)
+                    @Html.DisplayNameFor(model => model.Patient)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CabinetId)
+                    @Html.DisplayNameFor(model => model.CabinetId)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.DateTime)
+                    @Html.DisplayNameFor(model => model.DateTime)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Status)
+                    @Html.DisplayNameFor(model => model.Status)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Doctor)
+                    @Html.DisplayNameFor(model => model.Doctor)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Patient.ReturnFIO)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CabinetId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DateTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Status)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Doctor.ReturnFIO)
-            </td>
-            
-                        @if (this.User.IsInRole("Receptionist,Admin"))
-                        {
+            @foreach (var item in Model)
+            {
+            <tr>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                        
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                        
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                        @Html.DisplayFor(modelItem => item.Patient.ReturnFIO)
                 </td>
-                        }
-        </tr>
-}
+                <td>
+                        @Html.DisplayFor(modelItem => item.CabinetId)
+                </td>
+                <td>
+                        @Html.DisplayFor(modelItem => item.DateTime)
+                </td>
+                <td>
+                        @Html.DisplayFor(modelItem => item.Status)
+                </td>
+                <td>
+                        @Html.DisplayFor(modelItem => item.Doctor.ReturnFIO)
+                </td>
+                    @if (this.User.IsInRole("Receptionist,Admin"))
+                    {
+                    <td>
+                        <a asp-action="Cancel" asp-route-id="@item.Id">Отменить</a> |
+                    </td>
+                    }
+
+                    @if (this.User.IsInRole("Receptionist,Admin"))
+                    {
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+
+                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+
+                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    </td>
+                    }
+            </tr>
+            }
     </tbody>
 </table>

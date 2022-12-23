@@ -238,14 +238,14 @@ namespace Polyclinic.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("AssistantId")
+                    b.Property<int?>("AssistantId")
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("PatientId")
+                    b.Property<int?>("PatientId")
                         .HasColumnType("int");
 
                     b.Property<string>("Type")
@@ -278,7 +278,7 @@ namespace Polyclinic.Migrations
                     b.Property<string>("DiagnosisId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("DoctorId")
+                    b.Property<int?>("DoctorId")
                         .HasColumnType("int");
 
                     b.Property<int?>("PatientId")
@@ -409,7 +409,7 @@ namespace Polyclinic.Migrations
                     b.Property<int?>("DoctorId")
                         .HasColumnType("int");
 
-                    b.Property<int>("PatientId")
+                    b.Property<int?>("PatientId")
                         .HasColumnType("int");
 
                     b.Property<string>("Status")
@@ -438,10 +438,10 @@ namespace Polyclinic.Migrations
                     b.Property<string>("DiagnosisId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("DoctorIdInitial")
+                    b.Property<int?>("DoctorIdInitial")
                         .HasColumnType("int");
 
-                    b.Property<int?>("DoctorIdTarget")
+                    b.Property<int>("DoctorIdTarget")
                         .HasColumnType("int");
 
                     b.Property<int?>("DoctorInitialId")
@@ -484,10 +484,10 @@ namespace Polyclinic.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("FunctionalDiagnosticsDoctorId")
+                    b.Property<int?>("FunctionalDiagnosticsDoctorId")
                         .HasColumnType("int");
 
-                    b.Property<int>("PatientId")
+                    b.Property<int?>("PatientId")
                         .HasColumnType("int");
 
                     b.Property<string>("Type")
@@ -517,7 +517,7 @@ namespace Polyclinic.Migrations
                     b.Property<string>("DiagnosisId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("DoctorId")
+                    b.Property<int?>("DoctorId")
                         .HasColumnType("int");
 
                     b.Property<int?>("FunctionalDiagnosticsDoctorId")
@@ -565,7 +565,6 @@ namespace Polyclinic.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("MiddleName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PolyclinicUserID")
@@ -595,10 +594,10 @@ namespace Polyclinic.Migrations
                     b.Property<string>("DiagnosisId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int?>("DoctorId")
+                    b.Property<int>("DoctorId")
                         .HasColumnType("int");
 
-                    b.Property<int>("PatientID")
+                    b.Property<int?>("PatientID")
                         .HasColumnType("int");
 
                     b.Property<string>("Recipe")
@@ -687,7 +686,6 @@ namespace Polyclinic.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("MiddleName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PolyclinicUserID")
@@ -755,15 +753,11 @@ namespace Polyclinic.Migrations
                 {
                     b.HasOne("Polyclinic.Models.Assistant", "Assistant")
                         .WithMany("Analyses")
-                        .HasForeignKey("AssistantId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("AssistantId");
 
                     b.HasOne("Polyclinic.Models.Patient", "Patient")
                         .WithMany("Analyses")
-                        .HasForeignKey("PatientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PatientId");
 
                     b.Navigation("Assistant");
 
@@ -782,9 +776,7 @@ namespace Polyclinic.Migrations
 
                     b.HasOne("Polyclinic.Models.Doctor", "Doctor")
                         .WithMany()
-                        .HasForeignKey("DoctorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("DoctorId");
 
                     b.HasOne("Polyclinic.Models.Patient", "Patient")
                         .WithMany()
@@ -825,9 +817,7 @@ namespace Polyclinic.Migrations
 
                     b.HasOne("Polyclinic.Models.Patient", "Patient")
                         .WithMany()
-                        .HasForeignKey("PatientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PatientId");
 
                     b.Navigation("Doctor");
 
@@ -865,15 +855,11 @@ namespace Polyclinic.Migrations
                 {
                     b.HasOne("Polyclinic.Models.FunctionalDiagnosticsDoctor", "FunctionalDiagnosticsDoctor")
                         .WithMany("Examinations")
-                        .HasForeignKey("FunctionalDiagnosticsDoctorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("FunctionalDiagnosticsDoctorId");
 
                     b.HasOne("Polyclinic.Models.Patient", "Patient")
                         .WithMany("Examinations")
-                        .HasForeignKey("PatientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PatientId");
 
                     b.Navigation("FunctionalDiagnosticsDoctor");
 
@@ -888,9 +874,7 @@ namespace Polyclinic.Migrations
 
                     b.HasOne("Polyclinic.Models.Doctor", "Doctor")
                         .WithMany()
-                        .HasForeignKey("DoctorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("DoctorId");
 
                     b.HasOne("Polyclinic.Models.FunctionalDiagnosticsDoctor", "FunctionalDiagnosticsDoctor")
                         .WithMany()
@@ -926,13 +910,13 @@ namespace Polyclinic.Migrations
 
                     b.HasOne("Polyclinic.Models.Doctor", "Doctor")
                         .WithMany()
-                        .HasForeignKey("DoctorId");
+                        .HasForeignKey("DoctorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Polyclinic.Models.Patient", "Patient")
                         .WithMany("Inspections")
-                        .HasForeignKey("PatientID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PatientID");
 
                     b.Navigation("Diagnosis");
 

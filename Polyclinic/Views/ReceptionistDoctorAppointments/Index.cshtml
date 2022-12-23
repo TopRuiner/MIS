@@ -67,15 +67,12 @@
             <td>
                     @Html.DisplayFor(modelItem => item.Doctor.ReturnFIO)
             </td>
-                    @if (this.User.IsInRole("Receptionist,Admin"))
-                    {
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> |
                 <a asp-action="Decline" asp-route-id="@item.Id">Decline</a>
             </td>
-                    }
         </tr>
 }
     </tbody>

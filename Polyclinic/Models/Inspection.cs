@@ -9,7 +9,9 @@ namespace Polyclinic.Models
         public int Id { get; set; }
         [ForeignKey("Patient")]
         [Display(Name = "Пациент")]
-        public int PatientID { get; set; }
+        public int? PatientID { get; set; }
+        [Display(Name = "Пациент")]
+
         public virtual Patient? Patient { get; set; }
         [Display(Name = "Жалобы")]
         public string? Complaint { get; set; }
@@ -19,6 +21,8 @@ namespace Polyclinic.Models
         [ForeignKey("Diagnosis")]
         [Display(Name = "Диагноз")]
         public string? DiagnosisId { get; set; }
+        [Display(Name = "Диагноз")]
+
         public virtual Diagnosis? Diagnosis { get; set; }
         [Display(Name = "Дата проведения")]
         public DateTime? Date { get; set; }
@@ -26,7 +30,9 @@ namespace Polyclinic.Models
         public string Type { get; set; }
         [ForeignKey("Doctor")]
         [Display(Name = "Доктор")]
-        public int? DoctorId { get; set; }
+        public int DoctorId { get; set; }
+        [Display(Name = "Доктор")]
+
         public virtual Doctor? Doctor { get; set; }
 
     }

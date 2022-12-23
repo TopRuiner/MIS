@@ -7,7 +7,7 @@ namespace EmailNotifier.Controllers
     [ApiController]
     public class AppointmentApproved : ControllerBase
     {
-        [HttpPost]
+        [HttpGet]
         [Route("SendEmailNotification")]
         public string Send([FromQuery] string email, [FromQuery] string subject, [FromQuery] string message)
         {

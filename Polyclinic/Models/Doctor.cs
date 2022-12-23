@@ -21,6 +21,8 @@ namespace Polyclinic.Models
         [ForeignKey("PolyclinicUser")]
         [Display(Name = "Id пользователя")]
         public string? PolyclinicUserID { get; set; }
+        [Display(Name = "Id пользователя")]
+
         public virtual PolyclinicUser? PolyclinicUser { get; set; }
         [Display(Name = "Специальнсть")]
         public string Speciality { get; set; }
@@ -41,7 +43,7 @@ namespace Polyclinic.Models
         {
             get
             {
-                return FirstName + " " + LastName + " " + MiddleName;
+                return LastName + " " + FirstName + " " + MiddleName;
             }
         }
         [NotMapped]

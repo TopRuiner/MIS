@@ -1,10 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace Polyclinic.Migrations
 {
-    public partial class init2 : Migration
+    public partial class FinalIGuess : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -220,7 +221,7 @@ namespace Polyclinic.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    MiddleName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    MiddleName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     BirthDate = table.Column<DateTime>(type: "date", nullable: true),
                     PolyclinicUserID = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
@@ -247,7 +248,7 @@ namespace Polyclinic.Migrations
                     PolyclinicUserID = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     PolisID = table.Column<int>(type: "int", nullable: false),
                     PoilsCompany = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PolisEndDate = table.Column<DateTime>(type: "date", nullable: false),
+                    PolisEndDate = table.Column<DateTime>(type: "date", nullable: true),
                     SnilsNumber = table.Column<int>(type: "int", nullable: false),
                     WorkPlace = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
@@ -262,15 +263,37 @@ namespace Polyclinic.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Receptionist",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    MiddleName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    BirthDate = table.Column<DateTime>(type: "date", nullable: true),
+                    PolyclinicUserID = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Receptionist", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Receptionist_AspNetUsers_PolyclinicUserID",
+                        column: x => x.PolyclinicUserID,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Analyses",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    PatientId = table.Column<int>(type: "int", nullable: false),
+                    PatientId = table.Column<int>(type: "int", nullable: true),
                     Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    AssistantId = table.Column<int>(type: "int", nullable: false)
+                    AssistantId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -279,14 +302,12 @@ namespace Polyclinic.Migrations
                         name: "FK_Analyses_Assistants_AssistantId",
                         column: x => x.AssistantId,
                         principalTable: "Assistants",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Analyses_Patients_PatientId",
                         column: x => x.PatientId,
                         principalTable: "Patients",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -296,7 +317,7 @@ namespace Polyclinic.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     DiagnosisId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    DoctorId = table.Column<int>(type: "int", nullable: false),
+                    DoctorId = table.Column<int>(type: "int", nullable: true),
                     PatientId = table.Column<int>(type: "int", nullable: true),
                     Type = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     AssistantId = table.Column<int>(type: "int", nullable: true),
@@ -320,8 +341,7 @@ namespace Polyclinic.Migrations
                         name: "FK_AnalysisReferrals_Doctors_DoctorId",
                         column: x => x.DoctorId,
                         principalTable: "Doctors",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_AnalysisReferrals_Patients_PatientId",
                         column: x => x.PatientId,
@@ -335,7 +355,7 @@ namespace Polyclinic.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    PatientId = table.Column<int>(type: "int", nullable: false),
+                    PatientId = table.Column<int>(type: "int", nullable: true),
                     CabinetId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -353,8 +373,7 @@ namespace Polyclinic.Migrations
                         name: "FK_DoctorAppointments_Patients_PatientId",
                         column: x => x.PatientId,
                         principalTable: "Patients",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -364,11 +383,11 @@ namespace Polyclinic.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     DiagnosisId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    DoctorIdInitial = table.Column<int>(type: "int", nullable: false),
-                    DoctorInitialId = table.Column<int>(type: "int", nullable: false),
+                    DoctorIdInitial = table.Column<int>(type: "int", nullable: true),
+                    DoctorInitialId = table.Column<int>(type: "int", nullable: true),
                     PatientId = table.Column<int>(type: "int", nullable: true),
                     Type = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DoctorIdTarget = table.Column<int>(type: "int", nullable: true),
+                    DoctorIdTarget = table.Column<int>(type: "int", nullable: false),
                     DoctorTargetId = table.Column<int>(type: "int", nullable: true),
                     СabinetNum = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DateTime = table.Column<DateTime>(type: "datetime2", nullable: true)
@@ -385,8 +404,7 @@ namespace Polyclinic.Migrations
                         name: "FK_DoctorReferrals_Doctors_DoctorInitialId",
                         column: x => x.DoctorInitialId,
                         principalTable: "Doctors",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_DoctorReferrals_Doctors_DoctorTargetId",
                         column: x => x.DoctorTargetId,
@@ -406,7 +424,7 @@ namespace Polyclinic.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     DiagnosisId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    DoctorId = table.Column<int>(type: "int", nullable: false),
+                    DoctorId = table.Column<int>(type: "int", nullable: true),
                     PatientId = table.Column<int>(type: "int", nullable: true),
                     Type = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     FunctionalDiagnosticsDoctorId = table.Column<int>(type: "int", nullable: true),
@@ -425,8 +443,7 @@ namespace Polyclinic.Migrations
                         name: "FK_ExaminationReferrals_Doctors_DoctorId",
                         column: x => x.DoctorId,
                         principalTable: "Doctors",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_ExaminationReferrals_FunctionalDiagnosticsDoctors_FunctionalDiagnosticsDoctorId",
                         column: x => x.FunctionalDiagnosticsDoctorId,
@@ -447,8 +464,8 @@ namespace Polyclinic.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FunctionalDiagnosticsDoctorId = table.Column<int>(type: "int", nullable: false),
-                    PatientId = table.Column<int>(type: "int", nullable: false)
+                    FunctionalDiagnosticsDoctorId = table.Column<int>(type: "int", nullable: true),
+                    PatientId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -457,14 +474,12 @@ namespace Polyclinic.Migrations
                         name: "FK_Examinations_FunctionalDiagnosticsDoctors_FunctionalDiagnosticsDoctorId",
                         column: x => x.FunctionalDiagnosticsDoctorId,
                         principalTable: "FunctionalDiagnosticsDoctors",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Examinations_Patients_PatientId",
                         column: x => x.PatientId,
                         principalTable: "Patients",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -473,14 +488,13 @@ namespace Polyclinic.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    PatientID = table.Column<int>(type: "int", nullable: false),
+                    PatientID = table.Column<int>(type: "int", nullable: true),
                     Complaint = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Data = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Appointment = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Recipe = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DiagnosisId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DoctorId = table.Column<int>(type: "int", nullable: true)
+                    DoctorId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -494,13 +508,13 @@ namespace Polyclinic.Migrations
                         name: "FK_Inspections_Doctors_DoctorId",
                         column: x => x.DoctorId,
                         principalTable: "Doctors",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Inspections_Patients_PatientID",
                         column: x => x.PatientID,
                         principalTable: "Patients",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
@@ -665,6 +679,11 @@ namespace Polyclinic.Migrations
                 name: "IX_Patients_PolyclinicUserID",
                 table: "Patients",
                 column: "PolyclinicUserID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Receptionist_PolyclinicUserID",
+                table: "Receptionist",
+                column: "PolyclinicUserID");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -704,6 +723,9 @@ namespace Polyclinic.Migrations
 
             migrationBuilder.DropTable(
                 name: "Inspections");
+
+            migrationBuilder.DropTable(
+                name: "Receptionist");
 
             migrationBuilder.DropTable(
                 name: "Assistants");

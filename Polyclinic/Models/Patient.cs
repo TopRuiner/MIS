@@ -18,7 +18,11 @@ namespace Polyclinic.Models
         [Display(Name = "Дата рождения")]
         public DateTime? BirthDate { get; set; }
         [ForeignKey("PolyclinicUser")]
+        [Display(Name = "Id пользователя")]
+
         public string? PolyclinicUserID { get; set; }
+        [Display(Name = "Id пользователя")]
+
         public virtual PolyclinicUser? PolyclinicUser { get; set; }
         [Display(Name = "Номер полиса")]
         public int PolisID { get; set; }
@@ -55,7 +59,7 @@ namespace Polyclinic.Models
         {
             get
             {
-                return FirstName + " " + LastName + " " + MiddleName;
+                return LastName + " " + FirstName + " " + MiddleName;
             }
         }
         [NotMapped]
@@ -63,7 +67,7 @@ namespace Polyclinic.Models
         {
             get
             {
-                return FirstName + " " + LastName + " " + MiddleName + " " + this.BirthDate?.ToShortDateString();
+                return LastName + " " + FirstName + " " + MiddleName + " " + this.BirthDate?.ToShortDateString();
             }
         }
 
