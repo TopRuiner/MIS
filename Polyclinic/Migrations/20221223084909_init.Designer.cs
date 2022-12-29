@@ -12,8 +12,8 @@ using Polyclinic.Data;
 namespace Polyclinic.Migrations
 {
     [DbContext(typeof(PolyclinicContext))]
-    [Migration("20221222180140_FinalIGuess")]
-    partial class FinalIGuess
+    [Migration("20221223084909_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
