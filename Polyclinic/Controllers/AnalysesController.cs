@@ -23,7 +23,7 @@ namespace Polyclinic.Controllers
         }
 
         // GET: Analyses
-        [Authorize(Roles = "Admin,Doctor,Assistant,Patient")]
+        //[Authorize(Roles = "Admin,Doctor,Assistant,Patient")]
 
         public async Task<IActionResult> Index()
 
@@ -44,7 +44,7 @@ namespace Polyclinic.Controllers
             return View(await polyclinicContext.ToListAsync());
         }
         [HttpGet]
-        [Authorize(Roles = "Admin,Doctor,Assistant,Patient")]
+        //[Authorize(Roles = "Admin,Doctor,Assistant,Patient")]
 
         public async Task<IActionResult> Index(string patientFIO, DateTime? patientBirthDate)
         {
@@ -85,7 +85,7 @@ namespace Polyclinic.Controllers
 
 
         // GET: Analyses/Details/5
-        [Authorize(Roles = "Admin,Doctor,Assistant")]
+        //[Authorize(Roles = "Admin,Doctor,Assistant")]
 
         public async Task<IActionResult> Details(int? id)
         {
@@ -107,7 +107,7 @@ namespace Polyclinic.Controllers
         }
 
         // GET: Analyses/Create
-        [Authorize(Roles = "Admin,Assistant")]
+        //[Authorize(Roles = "Admin,Assistant")]
 
         public IActionResult Create()
         {
